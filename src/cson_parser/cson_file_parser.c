@@ -19,7 +19,6 @@
 
 void	cson_flush_buffer(t_cson_parser *parser, int *err)
 {
-	printf("flush buffer STATE IS = %d\n", parser->state);
 	if (parser->state == CSON_PARSER_STRING_VALUE_STATE)
 		cson_string_set_value(parser, err);
 	else if (parser->state == CSON_PARSER_TRUE_VALUE_STATE)

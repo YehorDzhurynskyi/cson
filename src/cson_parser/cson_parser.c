@@ -58,7 +58,6 @@ void	cson_parse_chunk(t_cson_parser *parser, const char *buffer, size_t size, in
 	i = -1;
 	while (++i < (int)size)
 	{
-		ft_printf("SYMBOL IS = %c, STATE IS = %d\n", buffer[i], parser->state);
 		state_handler = determine_state_handler(parser->state);
 		status = state_handler(parser, buffer[i], err);
 		if (status == handler_error)

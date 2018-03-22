@@ -94,7 +94,7 @@ t_handler_status	cson_before_key_handler(t_cson_parser *parser, char ch, int *er
 	if (ft_isalpha(ch))
 	{
 		i = 0;
-		while (i < parser->indent - parser->buffer_offset)
+		while (i++ < parser->indent - parser->buffer_offset)
 			parser->current = parser->parent;
 		parser->indent = parser->indent - (parser->indent - parser->buffer_offset);
 		parser->state = CSON_PARSER_KEY_STATE;

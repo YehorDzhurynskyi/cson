@@ -14,16 +14,26 @@
 #include <unistd.h>
 #include <stdlib.h>
 
-int		main(void)
+static void	perform_test(const char *file)
 {
 	int		err;
 	t_cson	*cson;
-	char dir[255];
-	getcwd(dir, 255);
 
-	cson = cson_parse_file(SAMPLE_DIR "simple_pairs.cson", &err);
+	ft_printf(" === File test: %s\n", file);
+	cson = cson_parse_file(file, &err);
 	cson_print(cson);
-	ft_printf("Error mask: %05b\n", err);
+	ft_printf(" === Error mask: %05b\n\n", err);
+	cson_free(cson);
+}
+
+int		main(void)
+{
+	perform_test(SAMPLE_DIR "simple_pairs.cson");
+	perform_test(SAMPLE_DIR "tree_pairs.cson");
+#if 1
 	system("leaks btest | tail -n 1");
+#else
+	system("leaks btest");
+#endif
 	return (0);
 }
