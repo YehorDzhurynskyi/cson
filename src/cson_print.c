@@ -33,7 +33,9 @@ static void	print_node(const t_cson *cson)
 	while (depth--)
 		ft_putchar('\t');
 	ft_printf("%s:", cson->key);
-	if (cson->value_type == CSON_STRING_VALUE_TYPE)
+	if (cson->value_type == CSON_UNDEFINED_VALUE_TYPE)
+		ft_printf(" undefined");
+	else if (cson->value_type == CSON_STRING_VALUE_TYPE)
 		ft_printf(" '%s'", cson->value.string);
 	else if (cson->value_type == CSON_INTEGER_VALUE_TYPE)
 		ft_printf(" %d", cson->value.integer);
@@ -50,5 +52,10 @@ static void	print_node(const t_cson *cson)
 
 void		cson_print(const t_cson *cson)
 {
+	if (cson == NULL)
+	{
+		ft_printf("(null)\n");
+		return ;
+	}
 	cson_foreach(cson, print_node);
 }

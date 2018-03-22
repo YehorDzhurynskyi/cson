@@ -16,11 +16,11 @@ void	cson_log_parsing_error(const char *msg, char error_symbol, int *err, int er
 {
 	*err = errcode;
 	ft_printf_fd(2, "[%#x] CSON Parsing error: %s on symbol"
-	"- %c (ascii code is %d)\n", errcode, msg, error_symbol, (int)error_symbol);
+	"- '%c' (ascii code is %d)\n", errcode, msg, error_symbol, (int)error_symbol);
 }
 
 void	cson_log_error(const char *msg, int *err, int errcode)
 {
 	*err = errcode;
-	ft_printf_fd(2, "[%#x] CSON Parsing error: %s\n", msg);
+	ft_printf_fd(2, "[%#x] CSON Parsing error: %s\n", errcode, msg);
 }

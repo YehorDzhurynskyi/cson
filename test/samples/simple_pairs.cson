@@ -1,0 +1,6 @@
+integerkey: -2147483648
+realkey: -12345.890
+singlequotestringkey: 'Lorem" ipsum" dolar'
+doublequotestringkey: "Lorem' ipsum' dolar"
+truebooleankey: true
+falsebooleankey: false

@@ -23,30 +23,38 @@ static t_bool		check_for_fractional_delimeter(t_cson_parser *parser, char ch, in
 	return (TRUE);
 }
 
+t_bool				cson_number_set_value(t_cson_parser *parser, int *err)
+{
+	if (parser->buffer_offset == 1
+	&& (parser->buffer[0] == '+' || parser->buffer[0] == '-'))
+	{
+		cson_log_error("number value can't consist of sign only",
+		err, CSON_VALUE_PARSING_ERROR);
+		return (FALSE);
+	}
+	parser->buffer[parser->buffer_offset] = '\0';
+	if (!ft_strnchr(parser->buffer, '.', parser->buffer_offset))
+	{
+		parser->current->value.integer = ft_atoi(parser->buffer);
+		parser->current->value_type = CSON_INTEGER_VALUE_TYPE;
+	}
+	else
+	{
+		parser->current->value.real = ft_atoi(parser->buffer); // TODO: add real number parse method
+		parser->current->value_type = CSON_REAL_VALUE_TYPE;
+	}
+	return (TRUE);
+}
+
 t_handler_status	cson_number_handler(t_cson_parser *parser, char ch, int *err)
 {
 	if (ft_isws(ch))
 	{
-		if (parser->buffer_offset == 1
-		&& (parser->buffer[0] == '+' || parser->buffer[0] == '-'))
-		{
-			cson_log_parsing_error("number value can't consist of sign only",
-			ch, err, CSON_VALUE_PARSING_ERROR);
+		if (cson_number_set_value(parser, err) == FALSE)
 			return (handler_error);
-		}
-		parser->buffer[parser->buffer_offset] = '\0';
-		if (!ft_strnchr(parser->buffer, '.', parser->buffer_offset))
-		{
-			parser->current->value.integer = ft_atoi(parser->buffer);
-			parser->current->value_type = CSON_INTEGER_VALUE_TYPE;
-		}
-		else
-		{
-			parser->current->value.real = ft_atoi(parser->buffer); // TODO: add real number parse method
-			parser->current->value_type = CSON_REAL_VALUE_TYPE;
-		}
 		parser->buffer_offset = 0;
 		parser->state = CSON_PARSER_EOV_STATE;
+		return (cson_eov_handler(parser, ch, err));
 	}
 	if (!ft_isdigit(ch) && ch != '.')
 	{

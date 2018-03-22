@@ -13,17 +13,17 @@
 #ifndef FT_H
 # define FT_H
 
-# include "ft_alst.h"
-# include "ft_amap.h"
-# include "ft_file.h"
-# include "ft_float.h"
-# include "ft_math.h"
-# include "ft_sort.h"
-# include "ft_stack.h"
-# include "ft_time.h"
-# include "mat.h"
-# include "vec.h"
-# include "rect.h"
-# include "libft.h"
+# include "include/ft_alst.h"
+# include "include/ft_amap.h"
+# include "include/ft_file.h"
+# include "include/ft_float.h"
+# include "include/ft_math.h"
+# include "include/ft_sort.h"
+# include "include/ft_stack.h"
+# include "include/ft_time.h"
+# include "include/mat.h"
+# include "include/vec.h"
+# include "include/rect.h"
+# include "include/libft.h"
 
 #endif

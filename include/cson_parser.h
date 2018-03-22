@@ -18,18 +18,18 @@
 
 # define CSON_PARSER_BSIZE	1024
 
-# define CSON_PARSER_BEFORE_KEY_STATE			0x0
-# define CSON_PARSER_KEY_STATE					0x1
-# define CSON_PARSER_AFTER_KEY_STATE			0x2
-# define CSON_PARSER_BEFORE_VALUE_STATE			0x3
-# define CSON_PARSER_STRING_VALUE_STATE			0x4
-# define CSON_PARSER_ARRAY_VALUE_STATE			0x5
-# define CSON_PARSER_EMPTY_OBJECT_VALUE_STATE	0x6
-# define CSON_PARSER_OBJECT_VALUE_STATE			0x7
-# define CSON_PARSER_NUMBER_VALUE_STATE			0x8
-# define CSON_PARSER_TRUE_VALUE_STATE			0x9
-# define CSON_PARSER_FALSE_VALUE_STATE			0x10
-# define CSON_PARSER_EOV_STATE					0x11
+# define CSON_PARSER_BEFORE_KEY_STATE			0
+# define CSON_PARSER_KEY_STATE					1
+# define CSON_PARSER_AFTER_KEY_STATE			2
+# define CSON_PARSER_BEFORE_VALUE_STATE			3
+# define CSON_PARSER_STRING_VALUE_STATE			4
+# define CSON_PARSER_ARRAY_VALUE_STATE			5
+# define CSON_PARSER_EMPTY_OBJECT_VALUE_STATE	6
+# define CSON_PARSER_OBJECT_VALUE_STATE			7
+# define CSON_PARSER_NUMBER_VALUE_STATE			8
+# define CSON_PARSER_TRUE_VALUE_STATE			9
+# define CSON_PARSER_FALSE_VALUE_STATE			10
+# define CSON_PARSER_EOV_STATE					11
 
 typedef enum e_handler_status	t_handler_status;
 enum				e_handler_status
@@ -77,4 +77,8 @@ t_handler_status	cson_empty_object_handler(t_cson_parser *parser, char ch, int *
 t_handler_status	cson_object_handler(t_cson_parser *parser, char ch, int *err);
 t_handler_status	cson_string_handler(t_cson_parser *parser, char ch, int *err);
 
+t_bool				cson_string_set_value(t_cson_parser *parser, int *err);
+t_bool				cson_number_set_value(t_cson_parser *parser, int *err);
+void				cson_boolean_set_value(t_cson_parser *parser, int value);
+void				cson_flush_buffer(t_cson_parser *parser, int *err);
 #endif

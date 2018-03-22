@@ -58,6 +58,7 @@ void	cson_parse_chunk(t_cson_parser *parser, const char *buffer, size_t size, in
 	i = -1;
 	while (++i < (int)size)
 	{
+		ft_printf("SYMBOL IS = %c, STATE IS = %d\n", buffer[i], parser->state);
 		state_handler = determine_state_handler(parser->state);
 		status = state_handler(parser, buffer[i], err);
 		if (status == handler_error)
@@ -81,6 +82,7 @@ t_cson	*parse_cson(const char *buffer, size_t size, int *err)
 {
 	t_cson_parser	parser;
 
+	*err = 0;
 	parser = cson_init_parser();
 	if (parser.root == NULL || parser.root->value.tuple == NULL || parser.buffer == NULL)
 	{
@@ -89,6 +91,7 @@ t_cson	*parse_cson(const char *buffer, size_t size, int *err)
 		return (NULL);
 	}
 	cson_parse_chunk(&parser, buffer, size, err);
+	cson_flush_buffer(&parser, err);
 	free(parser.buffer);
 	return (parser.root);
 }

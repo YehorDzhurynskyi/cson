@@ -12,6 +12,12 @@
 
 #include "cson_parser.h"
 
+void				cson_boolean_set_value(t_cson_parser *parser, int value)
+{
+	parser->current->value.boolean = value;
+	parser->current->value_type = CSON_BOOLEAN_VALUE_TYPE;
+}
+
 t_handler_status	cson_false_handler(t_cson_parser *parser, char ch, int *err)
 {
 	if ((parser->buffer_offset == 1 && ch != 'a')
@@ -26,11 +32,10 @@ t_handler_status	cson_false_handler(t_cson_parser *parser, char ch, int *err)
 	}
 	if (ft_isws(ch))
 	{
-		parser->current->value.boolean = FALSE;
-		parser->current->value_type = CSON_BOOLEAN_VALUE_TYPE;
+		cson_boolean_set_value(parser, FALSE);
 		parser->buffer_offset = 0;
 		parser->state = CSON_PARSER_EOV_STATE;
-		return (handler_skip);
+		return (cson_eov_handler(parser, ch, err));
 	}
 	return (handler_record);
 }
@@ -48,11 +53,10 @@ t_handler_status	cson_true_handler(t_cson_parser *parser, char ch, int *err)
 	}
 	if (ft_isws(ch))
 	{
-		parser->current->value.boolean = TRUE;
-		parser->current->value_type = CSON_BOOLEAN_VALUE_TYPE;
+		cson_boolean_set_value(parser, TRUE);
 		parser->buffer_offset = 0;
 		parser->state = CSON_PARSER_EOV_STATE;
-		return (handler_skip);
+		return (cson_eov_handler(parser, ch, err));
 	}
 	return (handler_record);
 }
