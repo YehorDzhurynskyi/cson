@@ -13,23 +13,6 @@
 #include "cson_parser.h"
 #include <stdlib.h>
 
-static t_bool			ensure_buffer_capacity(t_cson_parser *parser)
-{
-	char	*buffer;
-
-	if (parser->buffer_offset == (int)parser->buffer_size - 1)
-	{
-		buffer = malloc(sizeof(char) * (parser->buffer_size * 2));
-		if (buffer == NULL)
-			return (FALSE);
-		ft_memcpy(buffer, parser->buffer, parser->buffer_size);
-		free(parser->buffer);
-		parser->buffer_size = parser->buffer_size * 2;
-		parser->buffer = buffer;
-	}
-	return (TRUE);
-}
-
 static t_state_handler	determine_state_handler(int state)
 {
 	static t_state_handler	state_handler_pool[] = {
@@ -64,23 +47,20 @@ void					cson_parse_chunk(t_cson_parser *parser, const char *buffer, size_t size
 		state_handler = determine_state_handler(parser->state);
 		status = state_handler(parser, buffer[i]);
 		if (status == handler_error)
-		{
-			cson_free_parser(parser);
 			return ;
-		}
 		else if (status == handler_record)
 		{
-			if (ensure_buffer_capacity(parser) == FALSE)
+			if (cson_ensure_buffer_capacity(parser) == FALSE)
 			{
 				cson_log_error(parser, strerror(errno), CSON_MEM_ALLOC_ERROR);
-				cson_free_parser(parser);
+				return ;
 			}
 			parser->buffer[parser->buffer_offset++] = buffer[i];
 		}
 	}
 }
 
-t_bool					cson_init_parser(t_cson_parser *parser)
+t_bool					cson_init_parser(t_cson_parser *parser, int *err)
 {
 	parser->root = cson_alloc(NULL);
 	parser->root->value.tuple = alst_create(3);
@@ -92,7 +72,7 @@ t_bool					cson_init_parser(t_cson_parser *parser)
 	parser->buffer = (char*)malloc(sizeof(char) * parser->buffer_size);
 	parser->buffer_offset = 0;
 	parser->current_line = 1;
-	parser->err = 0;
+	parser->err = err;
 	if (parser->root == NULL || parser->root->value.tuple == NULL || parser->buffer == NULL)
 	{
 		cson_log_error(parser, strerror(errno), CSON_MEM_ALLOC_ERROR);
@@ -100,4 +80,12 @@ t_bool					cson_init_parser(t_cson_parser *parser)
 		return (FALSE);
 	}
 	return (TRUE);
+}
+
+void					cson_free_parser(t_cson_parser *parser)
+{
+	cson_free(parser->root);
+	free(parser->buffer);
+	parser->buffer = NULL;
+	parser->root = NULL;
 }

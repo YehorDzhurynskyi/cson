@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cson_logger.h                                      :+:      :+:    :+:   */
+/*   cson_parser_buffer.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ydzhuryn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -11,16 +11,32 @@
 /* ************************************************************************** */
 
 #include "cson_parser.h"
+#include <stdlib.h>
 
-void	cson_log_parsing_error(t_cson_parser *parser, const char *msg, char error_symbol, int errcode)
+t_bool	cson_ensure_buffer_capacity(t_cson_parser *parser)
 {
-	*parser->err = errcode;
-	ft_printf_fd(2, "[%#x] CSON Parsing error (on line: %d): %s on symbol"
-	"- '%c' (ascii code is %d)\n", errcode, parser->current_line, msg, error_symbol, (int)error_symbol);
+	char	*buffer;
+
+	if (parser->buffer_offset == (int)parser->buffer_size - 1)
+	{
+		buffer = malloc(sizeof(char) * (parser->buffer_size * 2));
+		if (buffer == NULL)
+			return (FALSE);
+		ft_memcpy(buffer, parser->buffer, parser->buffer_size);
+		free(parser->buffer);
+		parser->buffer_size = parser->buffer_size * 2;
+		parser->buffer = buffer;
+	}
+	return (TRUE);
 }
 
-void	cson_log_error(t_cson_parser *parser, const char *msg, int errcode)
+t_bool	cson_flush_buffer(t_cson_parser *parser)
 {
-	*parser->err = errcode;
-	ft_printf_fd(2, "[%#x] CSON Parsing error (on line: %d): %s\n", errcode, parser->current_line, msg);
+	if (parser->state == CSON_PARSER_STRING_VALUE_STATE)
+	{
+		cson_log_error(parser, "the value of the string should have a closing quote", CSON_VALUE_PARSING_ERROR);
+		return (FALSE);
+	}
+	return (cson_assign_value(parser));
 }
+

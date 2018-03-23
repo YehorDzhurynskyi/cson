@@ -8,6 +8,7 @@ CSON_CSON_PARSER_SRC	:=	cson_array_handler.c\
 							cson_number_handler.c\
 							cson_object_handler.c\
 							cson_parser.c\
+							cson_parser_buffer.c\
 							cson_string_handler.c\
 							cson_value.c\
 

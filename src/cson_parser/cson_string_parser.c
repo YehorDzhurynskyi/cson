@@ -17,12 +17,11 @@ t_cson	*cson_parse_str(const char *str, size_t size, int *err)
 {
 	t_cson_parser	parser;
 
-	if (cson_init_parser(&parser) == FALSE)
+	if (cson_init_parser(&parser, err) == FALSE)
 		return (NULL);
 	cson_parse_chunk(&parser, str, size);
-	if (cson_flush_buffer(&parser) == FALSE)
+	if (*parser.err != 0 || cson_flush_buffer(&parser) == FALSE)
 		cson_free_parser(&parser);
 	free(parser.buffer);
-	*err = parser.err;
 	return (parser.root);
 }
