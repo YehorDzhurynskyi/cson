@@ -49,33 +49,35 @@ struct				s_cson_parser
 	size_t			buffer_size;
 	int				buffer_offset;
 	int				state;
+	int				current_line;
+	int				err;
 };
 
-void				cson_log_parsing_error(const char *msg, char error_symbol, int *err, int errcode);
-void				cson_log_error(const char *msg, int *err, int errcode);
+void				cson_log_parsing_error(t_cson_parser *parser, const char *msg, char error_symbol, int errcode);
+void				cson_log_error(t_cson_parser *parser, const char *msg, int errcode);
 t_cson				*cson_alloc(t_cson *is_root);
 t_cson_parser		cson_init_parser(void);
 void				cson_free_parser(t_cson_parser *parser);
-void				cson_parse_chunk(t_cson_parser *parser, const char *buffer, size_t size, int *err);
+void				cson_parse_chunk(t_cson_parser *parser, const char *buffer, size_t size);
 
 /*
 **	Finite-state machine handlers
 */
-typedef t_handler_status	(*t_state_handler)(t_cson_parser *parser, char ch, int *err);
+typedef t_handler_status	(*t_state_handler)(t_cson_parser *parser, char ch);
 
-t_handler_status	cson_array_handler(t_cson_parser *parser, char ch, int *err);
-t_handler_status	cson_boolean_handler(t_cson_parser *parser, char ch, int *err);
-t_handler_status	cson_eov_handler(t_cson_parser *parser, char ch, int *err);
-t_handler_status	cson_before_value_handler(t_cson_parser *parser, char ch, int *err);
-t_handler_status	cson_after_key_handler(t_cson_parser *parser, char ch, int *err);
-t_handler_status	cson_key_handler(t_cson_parser *parser, char ch, int *err);
-t_handler_status	cson_before_key_handler(t_cson_parser *parser, char ch, int *err);
-t_handler_status	cson_number_handler(t_cson_parser *parser, char ch, int *err);
-t_handler_status	cson_empty_object_handler(t_cson_parser *parser, char ch, int *err);
-t_handler_status	cson_object_handler(t_cson_parser *parser, char ch, int *err);
-t_handler_status	cson_string_handler(t_cson_parser *parser, char ch, int *err);
+t_handler_status	cson_array_handler(t_cson_parser *parser, char ch);
+t_handler_status	cson_boolean_handler(t_cson_parser *parser, char ch);
+t_handler_status	cson_eov_handler(t_cson_parser *parser, char ch);
+t_handler_status	cson_before_value_handler(t_cson_parser *parser, char ch);
+t_handler_status	cson_after_key_handler(t_cson_parser *parser, char ch);
+t_handler_status	cson_key_handler(t_cson_parser *parser, char ch);
+t_handler_status	cson_before_key_handler(t_cson_parser *parser, char ch);
+t_handler_status	cson_number_handler(t_cson_parser *parser, char ch);
+t_handler_status	cson_empty_object_handler(t_cson_parser *parser, char ch);
+t_handler_status	cson_object_handler(t_cson_parser *parser, char ch);
+t_handler_status	cson_string_handler(t_cson_parser *parser, char ch);
 
-void				cson_flush_buffer(t_cson_parser *parser, int *err);
-t_bool				cson_assign_value(t_cson_parser *parser, int *err);
+t_bool				cson_flush_buffer(t_cson_parser *parser);
+t_bool				cson_assign_value(t_cson_parser *parser);
 
 #endif

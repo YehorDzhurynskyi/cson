@@ -12,25 +12,25 @@
 
 #include "cson_parser.h"
 
-static t_bool	cson_assign_string(t_cson_parser *parser, int *err)
+static t_bool	cson_assign_string(t_cson_parser *parser)
 {
 	parser->current->value.string = ft_strsub(parser->buffer + 1,
 	0, parser->buffer_offset - 1);
 	if (parser->current->value.string == NULL)
-		cson_log_error(strerror(errno), err, CSON_MEM_ALLOC_ERROR);
+		cson_log_error(parser, strerror(errno), CSON_MEM_ALLOC_ERROR);
 	parser->current->value_type = CSON_STRING_VALUE_TYPE;
 	return (parser->current->value.string != NULL);
 }
 
-static t_bool	cson_assign_number(t_cson_parser *parser, int *err)
+static t_bool	cson_assign_number(t_cson_parser *parser)
 {
 	t_bool	is_integer;
 
 	if (parser->buffer_offset == 1
 	&& (parser->buffer[0] == '+' || parser->buffer[0] == '-'))
 	{
-		cson_log_error("number value can't consist of sign only",
-		err, CSON_VALUE_PARSING_ERROR);
+		cson_log_error(parser, "number value can't consist of sign only",
+		CSON_VALUE_PARSING_ERROR);
 		return (FALSE);
 	}
 	parser->buffer[parser->buffer_offset] = '\0';
@@ -43,18 +43,20 @@ static t_bool	cson_assign_number(t_cson_parser *parser, int *err)
 	return (TRUE);
 }
 
-static t_bool	cson_assign_boolean(t_cson_parser *parser, int *err, int value)
+static t_bool	cson_assign_boolean(t_cson_parser *parser, int value)
 {
-	if (value == TRUE && !ft_strnequ("true", parser->buffer, 4))
+	if (value == TRUE && (parser->buffer_offset < 4
+	|| !ft_strnequ("true", parser->buffer, parser->buffer_offset)))
 	{
-		cson_log_error("wrong value (did you mean \"true\"?)",
-		err, CSON_VALUE_PARSING_ERROR);
+		cson_log_error(parser, "wrong value (did you mean \"true\"?)",
+		CSON_VALUE_PARSING_ERROR);
 		return (FALSE);
 	}
-	else if (value == FALSE && !ft_strnequ("false", parser->buffer, 5))
+	else if (value == FALSE && (parser->buffer_offset < 5
+	|| !ft_strnequ("false", parser->buffer, parser->buffer_offset)))
 	{
-		cson_log_error("wrong value (did you mean \"false\"?)",
-		err, CSON_VALUE_PARSING_ERROR);
+		cson_log_error(parser, "wrong value (did you mean \"false\"?)",
+		CSON_VALUE_PARSING_ERROR);
 		return (FALSE);
 	}
 	parser->current->value.boolean = value;
@@ -62,19 +64,19 @@ static t_bool	cson_assign_boolean(t_cson_parser *parser, int *err, int value)
 	return (TRUE);
 }
 
-t_bool			cson_assign_value(t_cson_parser *parser, int *err)
+t_bool			cson_assign_value(t_cson_parser *parser)
 {
 	t_bool	res;
 
 	res = TRUE;
 	if (parser->state == CSON_PARSER_NUMBER_VALUE_STATE)
-		res = cson_assign_number(parser, err);
+		res = cson_assign_number(parser);
 	else if (parser->state == CSON_PARSER_STRING_VALUE_STATE)
-		res = cson_assign_string(parser, err);
+		res = cson_assign_string(parser);
 	else if (parser->state == CSON_PARSER_TRUE_VALUE_STATE)
-		res = cson_assign_boolean(parser, err, TRUE);
+		res = cson_assign_boolean(parser, TRUE);
 	else if (parser->state == CSON_PARSER_FALSE_VALUE_STATE)
-		res = cson_assign_boolean(parser, err, FALSE);
+		res = cson_assign_boolean(parser, FALSE);
 	parser->buffer_offset = 0;
 	parser->state = CSON_PARSER_EOV_STATE;
 	return (res);

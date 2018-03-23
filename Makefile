@@ -29,6 +29,7 @@ include ./cson.mk
 btest: ./test/basic_tests.c $(LIBFT) $(CSON)
 	$(CC) -DSAMPLE_DIR="\"/Users/ydzhuryn/forgitln/cson/test/samples/\"" -I. -I./libft/ $< -L. -lcson -L./libft/ -lft -o $@
 
+
 clean:
 #	rm -f $(LIBFT_OBJ)
 	rm -f $(CSON_OBJ)

@@ -12,13 +12,13 @@
 
 #include "cson_parser.h"
 
-t_handler_status	cson_boolean_handler(t_cson_parser *parser, char ch, int *err)
+t_handler_status	cson_boolean_handler(t_cson_parser *parser, char ch)
 {
 	if (ft_isws(ch))
 	{
-		if (cson_assign_value(parser, err) == FALSE)
+		if (cson_assign_value(parser) == FALSE)
 			return (handler_error);
-		return (cson_eov_handler(parser, ch, err));
+		return (cson_eov_handler(parser, ch));
 	}
 	return (handler_record);
 }

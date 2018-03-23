@@ -12,12 +12,12 @@
 
 #include "cson_parser.h"
 
-t_handler_status	cson_eov_handler(t_cson_parser *parser, char ch, int *err)
+t_handler_status	cson_eov_handler(t_cson_parser *parser, char ch)
 {
 	if (ft_isws(ch) == FALSE)
 	{
-		cson_log_parsing_error("unrecognized symbol after the value",
-		ch, err, CSON_VALUE_PARSING_ERROR);
+		cson_log_parsing_error(parser, "unrecognized symbol after the value",
+		ch, CSON_VALUE_PARSING_ERROR);
 		return (handler_error);
 	}
 	if (ch == '\n')

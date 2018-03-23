@@ -1,0 +1,10 @@
+str:       'string1'
+str:			'string2'
+str:'string3'
+str: 'string4'
+str: '"string5"'
+str:       "string6"
+str:			"string7"
+str:"string8"
+str: "string9"
+str: "'string10'"

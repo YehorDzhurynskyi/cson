@@ -1,0 +1,32 @@
+
+
+
+
+
+str: "string
+int: 123"
+
+str: 'string
+int: 123'
+     
+str: '
+string
+int: 123
+'
+
+str: "
+string
+int: 123
+"
+
+     
+
+
+
+
+				
+str: "
+asdasdasd
+asdlas]fas
+asdasd
+"

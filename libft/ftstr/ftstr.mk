@@ -16,6 +16,7 @@ FTSTR_SRC	:=	ft_strcat.c\
 				ft_strmapi.c\
 				ft_strncat.c\
 				ft_strnchr.c\
+				ft_strchrn.c\
 				ft_strncmp.c\
 				ft_strncpy.c\
 				ft_strnequ.c\

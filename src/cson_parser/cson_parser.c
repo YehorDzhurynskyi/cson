@@ -49,7 +49,7 @@ static t_state_handler	determine_state_handler(int state)
 	return (state_handler_pool[state]);
 }
 
-void					cson_parse_chunk(t_cson_parser *parser, const char *buffer, size_t size, int *err)
+void					cson_parse_chunk(t_cson_parser *parser, const char *buffer, size_t size)
 {
 	int					i;
 	t_state_handler		state_handler;
@@ -58,8 +58,11 @@ void					cson_parse_chunk(t_cson_parser *parser, const char *buffer, size_t size
 	i = -1;
 	while (++i < (int)size)
 	{
+		if (buffer[i] == '\n')
+			parser->current_line++;
+		//ft_printf("STATE IS = %d, CHAR IS = %c\n", parser->state, buffer[i]);
 		state_handler = determine_state_handler(parser->state);
-		status = state_handler(parser, buffer[i], err);
+		status = state_handler(parser, buffer[i]);
 		if (status == handler_error)
 		{
 			cson_free_parser(parser);
@@ -69,7 +72,7 @@ void					cson_parse_chunk(t_cson_parser *parser, const char *buffer, size_t size
 		{
 			if (ensure_buffer_capacity(parser) == FALSE)
 			{
-				cson_log_error(strerror(errno), err, CSON_MEM_ALLOC_ERROR);
+				cson_log_error(parser, strerror(errno), CSON_MEM_ALLOC_ERROR);
 				cson_free_parser(parser);
 			}
 			parser->buffer[parser->buffer_offset++] = buffer[i];
@@ -90,5 +93,7 @@ t_cson_parser			cson_init_parser(void)
 	parser.buffer_size = CSON_PARSER_BSIZE;
 	parser.buffer = (char*)malloc(sizeof(char) * parser.buffer_size);
 	parser.buffer_offset = 0;
+	parser.current_line = 1;
+	parser.err = 0;
 	return (parser);
 }

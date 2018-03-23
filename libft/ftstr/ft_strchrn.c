@@ -1,28 +1,41 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strnchr.c                                       :+:      :+:    :+:   */
+/*   ft_strchrn.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ydzhuryn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/10/24 16:36:35 by ydzhuryn          #+#    #+#             */
-/*   Updated: 2017/10/25 20:15:41 by ydzhuryn         ###   ########.fr       */
+/*   Created: 2018/01/05 17:46:41 by ydzhuryn          #+#    #+#             */
+/*   Updated: 2018/01/05 17:54:54 by ydzhuryn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <string.h>
+#include "libft.h"
 
-char	*ft_strnchr(const char *ss, int c, int n)
+char	*ft_strchrn(const char *s, int c, int n)
 {
-	char *s;
+	char	*end;
 
-	s = (char *)ss;
-	while (*s && n)
+	if (n == 0)
+		return ((char *)s);
+	if (n > 0)
 	{
-		if (*s == (char)c)
-			return (s);
-		s++;
-		n--;
+		while (*s)
+		{
+			if (c == *s && --n == 0)
+				return ((char *)s);
+			s++;
+		}
 	}
-	return (*s == (char)c && n ? s : NULL);
+	else
+	{
+		end = ft_strrchr(s, '\0');
+		while (end >= s)
+		{
+			if (c == *end && ++n == 0)
+				return (end);
+			end--;
+		}
+	}
+	return (NULL);
 }

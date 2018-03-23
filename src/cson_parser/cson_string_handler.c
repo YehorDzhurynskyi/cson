@@ -12,11 +12,11 @@
 
 #include "cson_parser.h"
 
-t_handler_status	cson_string_handler(t_cson_parser *parser, char ch, int *err)
+t_handler_status	cson_string_handler(t_cson_parser *parser, char ch)
 {
 	if (parser->buffer[0] == ch)
 	{
-		if (cson_assign_value(parser, err) == FALSE)
+		if (cson_assign_value(parser) == FALSE)
 			return (handler_error);
 		return (handler_skip);
 	}

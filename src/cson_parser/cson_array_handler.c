@@ -12,7 +12,7 @@
 
 #include "cson_parser.h"
 
-t_handler_status	cson_array_handler(t_cson_parser *parser, char ch, int *err)
+t_handler_status	cson_array_handler(t_cson_parser *parser, char ch)
 {
 #if 0
 	parser->state = CSON_PARSER_BEFORE_VALUE_STATE;
@@ -27,7 +27,6 @@ t_handler_status	cson_array_handler(t_cson_parser *parser, char ch, int *err)
 	return (cson_before_value_handler(parser, ch, err));
 #else
 	(void)parser;
-	(void)err;
 	(void)ch;
 	return (handler_skip);
 #endif
