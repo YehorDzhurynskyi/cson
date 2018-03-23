@@ -4,3 +4,4 @@ singlequotestringkey: 'Lorem" ipsum" dolar'
 doublequotestringkey: "Lorem' ipsum' dolar"
 truebooleankey: true
 falsebooleankey: false
+emptyarray: {}

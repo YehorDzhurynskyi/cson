@@ -25,17 +25,19 @@ static void	print_node(const t_cson *cson)
 	if (cson->value_type == CSON_UNDEFINED_VALUE_TYPE)
 		ft_printf(" undefined");
 	else if (cson->value_type == CSON_STRING_VALUE_TYPE)
-		ft_printf(" '%s'", cson->value.string);
+		ft_printf(" str(%s)", cson->value.string);
 	else if (cson->value_type == CSON_INTEGER_VALUE_TYPE)
-		ft_printf(" %d", cson->value.integer);
+		ft_printf(" int(%d)", cson->value.integer);
 	else if (cson->value_type == CSON_REAL_VALUE_TYPE)
-		ft_printf(" %f", cson->value.real);
+		ft_printf(" real(%f)", cson->value.real);
 	else if (cson->value_type == CSON_BOOLEAN_VALUE_TYPE)
-		ft_printf(" %s", cson->value.boolean == FALSE ? "false" : "true");
+		ft_printf(" bool(%s)", cson->value.boolean == FALSE ? "false" : "true");
 	else if (cson->value_type == CSON_OBJECT_VALUE_TYPE && cson->value.tuple->size == 0)
 		ft_printf(" {}");
+	else if (cson->value_type == CSON_OBJECT_VALUE_TYPE && cson->value.tuple->size != 0)
+		ft_printf(" (object)");
 	else if (cson->value_type == CSON_ARRAY_VALUE_TYPE)
-		ft_printf(" [");
+		ft_printf(" (array)");
 	ft_putchar('\n');
 }
 
