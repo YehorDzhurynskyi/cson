@@ -3,6 +3,7 @@ CSON_CSON_PARSER_SRC	:=	cson_array_handler.c\
 							cson_boolean_handler.c\
 							cson_eov_handler.c\
 							cson_file_parser.c\
+							cson_string_parser.c\
 							cson_key_handler.c\
 							cson_number_handler.c\
 							cson_object_handler.c\

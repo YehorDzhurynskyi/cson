@@ -5,6 +5,13 @@ objectkey:
 	nesteddoublequotestringkey: "Lorem' ipsum' dolar"
 	nestedtruebooleankey: true
 	nestedfalsebooleankey: false
+	objectkey:
+		nestedintegerkey: -2147483648
+		nestedrealkey: -12345.890
+		nestedsinglequotestringkey: 'Lorem" ipsum" dolar'
+		nesteddoublequotestringkey: "Lorem' ipsum' dolar"
+		nestedtruebooleankey: true
+		nestedfalsebooleankey: false
 integerkey: -2147483648
 realkey: -12345.890
 singlequotestringkey: 'Lorem" ipsum" dolar'

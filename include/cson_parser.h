@@ -44,6 +44,7 @@ struct				s_cson_parser
 {
 	t_cson			*root;
 	t_cson			*current;
+	t_cson			*parent;
 	char			*buffer;
 	size_t			buffer_size;
 	int				buffer_offset;

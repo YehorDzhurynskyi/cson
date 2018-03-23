@@ -46,19 +46,6 @@ t_handler_status	cson_after_key_handler(t_cson_parser *parser, char ch, int *err
 			parser->state = CSON_PARSER_OBJECT_VALUE_STATE;
 		else if (ch == '{')
 			parser->state = CSON_PARSER_EMPTY_OBJECT_VALUE_STATE;
-		parser->current = cson_alloc(parser->current);
-		if (parser->current == NULL)
-		{
-			cson_log_error(strerror(errno), err, CSON_MEM_ALLOC_ERROR);
-			return (handler_error);
-		}
-		alst_add(parser->current->parent->value.tuple, parser->current);
-		parser->current->key = ft_strsub(parser->buffer, 0, parser->buffer_offset);
-		if (parser->current->key == NULL)
-		{
-			cson_log_error(strerror(errno), err, CSON_MEM_ALLOC_ERROR);
-			return (handler_error);
-		}
 		return (handler_skip);
 	}
 	return (cson_before_value_handler(parser, ch, err));
@@ -72,6 +59,19 @@ t_handler_status	cson_key_handler(t_cson_parser *parser, char ch, int *err)
 		{
 			cson_log_parsing_error("cson <key> can't be an empty string",
 			ch, err, CSON_KEY_PARSING_ERROR);
+			return (handler_error);
+		}
+		parser->current = cson_alloc(parser->parent);
+		if (parser->current == NULL)
+		{
+			cson_log_error(strerror(errno), err, CSON_MEM_ALLOC_ERROR);
+			return (handler_error);
+		}
+		alst_add(parser->parent->value.tuple, parser->current);
+		parser->current->key = ft_strsub(parser->buffer, 0, parser->buffer_offset);
+		if (parser->current->key == NULL)
+		{
+			cson_log_error(strerror(errno), err, CSON_MEM_ALLOC_ERROR);
 			return (handler_error);
 		}
 		parser->state = CSON_PARSER_AFTER_KEY_STATE;
@@ -89,23 +89,31 @@ t_handler_status	cson_key_handler(t_cson_parser *parser, char ch, int *err)
 
 t_handler_status	cson_before_key_handler(t_cson_parser *parser, char ch, int *err)
 {
-	int	i;
 	int	depth;
+	int	i;
 
 	if (ft_isalpha(ch))
 	{
-		depth = cson_depth_of_node(parser->current);
-		i = 0;
-		while (i++ < parser->indent - parser->buffer_offset)
-			parser->current = parser->parent;
-		parser->indent = parser->indent - (parser->indent - parser->buffer_offset);
+		if (parser->parent != parser->root)
+		{
+			depth = cson_depth_of_node(parser->parent);
+			if (parser->buffer_offset - depth > 0)
+			{
+				cson_log_error("bad identation before key",
+				err, CSON_KEY_PARSING_ERROR);
+				return (handler_error);
+			}
+			i = 0;
+			while (i++ < depth - parser->buffer_offset)
+				parser->parent = parser->parent->parent;
+		}
 		parser->state = CSON_PARSER_KEY_STATE;
 		parser->buffer_offset = 0;
 		return (handler_record);
 	}
-	else if (ch != '\t' || parser->buffer_offset >= parser->indent)
+	else if (ch != '\t')
 	{
-		cson_log_parsing_error("bad identation before key",
+		cson_log_parsing_error("bad symbol before key",
 		ch, err, CSON_KEY_PARSING_ERROR);
 		return (handler_error);
 	}

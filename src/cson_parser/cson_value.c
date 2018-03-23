@@ -62,11 +62,6 @@ static t_bool	cson_assign_boolean(t_cson_parser *parser, int *err, int value)
 	return (TRUE);
 }
 
-static t_bool	cson_assign_cson(t_cson_parser *parser, int *err)
-{
-	
-}
-
 t_bool			cson_assign_value(t_cson_parser *parser, int *err)
 {
 	t_bool	res;
@@ -80,8 +75,6 @@ t_bool			cson_assign_value(t_cson_parser *parser, int *err)
 		res = cson_assign_boolean(parser, err, TRUE);
 	else if (parser->state == CSON_PARSER_FALSE_VALUE_STATE)
 		res = cson_assign_boolean(parser, err, FALSE);
-	else if (parser->state == CSON_PARSER_OBJECT_VALUE_STATE)
-		res = cson_assign_cson(parser, err);
 	parser->buffer_offset = 0;
 	parser->state = CSON_PARSER_EOV_STATE;
 	return (res);
