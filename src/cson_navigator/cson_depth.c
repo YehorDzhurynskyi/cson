@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cson_array_handler.c                               :+:      :+:    :+:   */
+/*   cson_depth.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ydzhuryn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,25 +10,19 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cson_parser.h"
+#include "cson.h"
 
-t_handler_status	cson_array_handler(t_cson_parser *parser, char ch, int *err)
+int	cson_depth_of_node(const t_cson *cson)
 {
-#if 0
-	parser->state = CSON_PARSER_BEFORE_VALUE_STATE;
-	parser->current->value.tuple = alst_create(3);
-	if (parser->current->value.tuple == NULL)
+	int depth;
+
+	if (!cson)
+		return (-1);
+	depth = 0;
+	while (cson->parent)
 	{
-		cson_log_error(strerror(errno), err, CSON_MEM_ALLOC_ERROR);
-		return (handler_error);
+		depth++;
+		cson = cson->parent;
 	}
-	parser->current->value_type = CSON_OBJECT_VALUE_TYPE;
-	parser->parent = parser->current;
-	return (cson_before_value_handler(parser, ch, err));
-#else
-	(void)parser;
-	(void)err;
-	(void)ch;
-	return (handler_skip);
-#endif
+	return (depth);
 }

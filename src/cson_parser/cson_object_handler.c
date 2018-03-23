@@ -19,14 +19,13 @@ t_handler_status	cson_empty_object_handler(t_cson_parser *parser, char ch, int *
 		parser->state = CSON_PARSER_EOV_STATE;
 		return (handler_skip);
 	}
-	cson_log_parsing_error("unrecognized symbol in empty object value",
+	cson_log_parsing_error("unrecognized symbol in empty object value, should be \"{}\"",
 	ch, err, CSON_KEY_PARSING_ERROR);
 	return (handler_error);
 }
 
 t_handler_status	cson_object_handler(t_cson_parser *parser, char ch, int *err)
 {
-	parser->indent++;
 	parser->state = CSON_PARSER_BEFORE_KEY_STATE;
 	parser->current->value.tuple = alst_create(3);
 	if (parser->current->value.tuple == NULL)

@@ -30,33 +30,47 @@
 # define CSON_VALUE_PARSING_ERROR	0x5
 
 typedef union u_cson_value	t_cson_value;
-union						u_cson_value
+union				u_cson_value
 {
-	long long				integer;
-	double					real;
-	long long				boolean;
-	char					*string;
-	t_alst					*tuple;
+	long long		integer;
+	double			real;
+	long long		boolean;
+	char			*string;
+	t_alst			*tuple;
 };
 
 typedef struct s_cson		t_cson;
-struct						s_cson
+struct				s_cson
 {
-	char					*key;
-	t_cson_value			value;
-	int						value_type;
-	t_cson					*parent;
+	char			*key;
+	t_cson_value	value;
+	int				value_type;
+	t_cson			*parent;
 };
 
-t_cson						*cson_parse_file(const char *filename, int *err);
-// int							cson_type_of_node(const t_cson *cson, const char *nodepath);
-// char				*const	cson_get_string(const t_cson *cson, const char *nodepath);
-// int							cson_get_integer(const t_cson *cson, const char *nodepath);
-// double						cson_get_real(const t_cson *cson, const char *nodepath);
-// const t_cson		*const	cson_get_array(const t_cson *cson, const char *nodepath, size_t *size);
-// const t_cson		*const	cson_get_object(const t_cson *cson, const char *nodepath);
-void						cson_print(const t_cson *cson);
-void						cson_foreach(const t_cson *cson, void (*func)(const t_cson *item));
-void						cson_free(t_cson *cson);
+
+/*
+**	ALLOC/DEALLOC
+*/
+t_cson				*cson_parse_file(const char *filename, int *err);
+t_cson				*cson_parse_str(const char *str, size_t size, int *err);
+void				cson_free(t_cson *cson);
+
+/*
+**	NAVIGATION
+*/
+int					cson_type_of_node(const t_cson *cson, const char *nodepath);
+const char			*cson_get_string(const t_cson *cson, const char *nodepath);
+int					cson_get_integer(const t_cson *cson, const char *nodepath);
+double				cson_get_real(const t_cson *cson, const char *nodepath);
+const t_cson		*cson_get_array(const t_cson *cson, const char *nodepath, size_t *size);
+const t_cson		*cson_get_object(const t_cson *cson, const char *nodepath);
+
+/*
+**	MISC
+*/
+void				cson_foreach(const t_cson *cson, void (*func)(const t_cson *item));
+int					cson_depth_of_node(const t_cson *cson);
+void				cson_print(const t_cson *cson);
 
 #endif

@@ -19,14 +19,7 @@
 
 void	cson_flush_buffer(t_cson_parser *parser, int *err)
 {
-	if (parser->state == CSON_PARSER_STRING_VALUE_STATE)
-		cson_string_set_value(parser, err);
-	else if (parser->state == CSON_PARSER_TRUE_VALUE_STATE)
-		cson_boolean_set_value(parser, TRUE);
-	else if (parser->state == CSON_PARSER_FALSE_VALUE_STATE)
-		cson_boolean_set_value(parser, FALSE);
-	else if (parser->state == CSON_PARSER_NUMBER_VALUE_STATE)
-		cson_number_set_value(parser, err);
+	cson_assign_value(parser, err);
 }
 
 void	cson_free_parser(t_cson_parser *parser)

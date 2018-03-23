@@ -35,6 +35,6 @@ clean:
 
 fclean: clean
 	rm -f $(LIBFT)
-	rm -f $(CSON)
+#	rm -f $(CSON)
 
 re: fclean all

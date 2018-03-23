@@ -46,6 +46,19 @@ t_handler_status	cson_after_key_handler(t_cson_parser *parser, char ch, int *err
 			parser->state = CSON_PARSER_OBJECT_VALUE_STATE;
 		else if (ch == '{')
 			parser->state = CSON_PARSER_EMPTY_OBJECT_VALUE_STATE;
+		parser->current = cson_alloc(parser->current);
+		if (parser->current == NULL)
+		{
+			cson_log_error(strerror(errno), err, CSON_MEM_ALLOC_ERROR);
+			return (handler_error);
+		}
+		alst_add(parser->current->parent->value.tuple, parser->current);
+		parser->current->key = ft_strsub(parser->buffer, 0, parser->buffer_offset);
+		if (parser->current->key == NULL)
+		{
+			cson_log_error(strerror(errno), err, CSON_MEM_ALLOC_ERROR);
+			return (handler_error);
+		}
 		return (handler_skip);
 	}
 	return (cson_before_value_handler(parser, ch, err));
@@ -62,19 +75,6 @@ t_handler_status	cson_key_handler(t_cson_parser *parser, char ch, int *err)
 			return (handler_error);
 		}
 		parser->state = CSON_PARSER_AFTER_KEY_STATE;
-		parser->current = cson_alloc(parser->parent);
-		alst_add(parser->parent->value.tuple, parser->current);
-		if (parser->current == NULL)
-		{
-			cson_log_error(strerror(errno), err, CSON_MEM_ALLOC_ERROR);
-			return (handler_error);
-		}
-		parser->current->key = ft_strsub(parser->buffer, 0, parser->buffer_offset);
-		if (parser->current->key == NULL)
-		{
-			cson_log_error(strerror(errno), err, CSON_MEM_ALLOC_ERROR);
-			return (handler_error);
-		}
 		parser->buffer_offset = 0;
 		return (handler_skip);
 	}
@@ -90,9 +90,11 @@ t_handler_status	cson_key_handler(t_cson_parser *parser, char ch, int *err)
 t_handler_status	cson_before_key_handler(t_cson_parser *parser, char ch, int *err)
 {
 	int	i;
+	int	depth;
 
 	if (ft_isalpha(ch))
 	{
+		depth = cson_depth_of_node(parser->current);
 		i = 0;
 		while (i++ < parser->indent - parser->buffer_offset)
 			parser->current = parser->parent;

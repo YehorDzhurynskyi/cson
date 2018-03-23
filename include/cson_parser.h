@@ -44,11 +44,9 @@ struct				s_cson_parser
 {
 	t_cson			*root;
 	t_cson			*current;
-	t_cson			*parent;
 	char			*buffer;
 	size_t			buffer_size;
 	int				buffer_offset;
-	int				indent;
 	int				state;
 };
 
@@ -65,8 +63,7 @@ void				cson_parse_chunk(t_cson_parser *parser, const char *buffer, size_t size,
 typedef t_handler_status	(*t_state_handler)(t_cson_parser *parser, char ch, int *err);
 
 t_handler_status	cson_array_handler(t_cson_parser *parser, char ch, int *err);
-t_handler_status	cson_false_handler(t_cson_parser *parser, char ch, int *err);
-t_handler_status	cson_true_handler(t_cson_parser *parser, char ch, int *err);
+t_handler_status	cson_boolean_handler(t_cson_parser *parser, char ch, int *err);
 t_handler_status	cson_eov_handler(t_cson_parser *parser, char ch, int *err);
 t_handler_status	cson_before_value_handler(t_cson_parser *parser, char ch, int *err);
 t_handler_status	cson_after_key_handler(t_cson_parser *parser, char ch, int *err);
@@ -77,8 +74,7 @@ t_handler_status	cson_empty_object_handler(t_cson_parser *parser, char ch, int *
 t_handler_status	cson_object_handler(t_cson_parser *parser, char ch, int *err);
 t_handler_status	cson_string_handler(t_cson_parser *parser, char ch, int *err);
 
-t_bool				cson_string_set_value(t_cson_parser *parser, int *err);
-t_bool				cson_number_set_value(t_cson_parser *parser, int *err);
-void				cson_boolean_set_value(t_cson_parser *parser, int value);
 void				cson_flush_buffer(t_cson_parser *parser, int *err);
+t_bool				cson_assign_value(t_cson_parser *parser, int *err);
+
 #endif

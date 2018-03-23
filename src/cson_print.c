@@ -12,26 +12,13 @@
 
 #include "cson.h"
 
-static int	count_depth(const t_cson *cson)
-{
-	int depth;
-
-	depth = 0;
-	while (cson->parent)
-	{
-		depth++;
-		cson = cson->parent;
-	}
-	return (depth);
-}
-
 static void	print_node(const t_cson *cson)
 {
 	int	depth;
 
 	if (cson->parent == NULL)
 		return ;
-	depth = count_depth(cson) - 1;
+	depth = cson_depth_of_node(cson) - 1;
 	while (depth--)
 		ft_putchar('\t');
 	ft_printf("%s:", cson->key);

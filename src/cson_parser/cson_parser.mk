@@ -8,6 +8,7 @@ CSON_CSON_PARSER_SRC	:=	cson_array_handler.c\
 							cson_object_handler.c\
 							cson_parser.c\
 							cson_string_handler.c\
+							cson_value.c\
 
 CSON_CSON_PARSER_OBJ	=	$(addprefix $(CSON_OBJ_DIR), $(CSON_CSON_PARSER_SRC:.c=.o))
 CSON_CSON_PARSER		+=	$(addprefix $(CSON_CSON_PARSER_DIR), $(CSON_CSON_PARSER_SRC))
