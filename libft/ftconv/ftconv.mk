@@ -1,5 +1,6 @@
 FTCONV_DIR	:=	$(LIBFT_DIR)ftconv/
 FTCONV_SRC	:=	ft_atoi.c\
+				ft_atod.c\
 				ft_binary_ulltoa.c\
 				ft_hex_atoui.c\
 				ft_hex_uitoa.c\

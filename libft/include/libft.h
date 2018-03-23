@@ -53,6 +53,7 @@ char				*ft_strnstr(const char *big, const char *little, size_t l);
 int					ft_strcmp(const char *s1, const char *s2);
 int					ft_strncmp(const char *s1, const char *s2, size_t n);
 int					ft_atoi(const char *s);
+double				ft_atod(const char *s);
 unsigned int		ft_hex_atoui(const char *s);
 char				*ft_hex_uitoa(unsigned int n,
 		t_bool append_prefix, t_bool uppercase);

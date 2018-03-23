@@ -34,12 +34,12 @@ static t_bool	cson_assign_number(t_cson_parser *parser, int *err)
 		return (FALSE);
 	}
 	parser->buffer[parser->buffer_offset] = '\0';
-	is_integer = !ft_strnchr(parser->buffer, '.', parser->buffer_offset);
+	is_integer = ft_strchr(parser->buffer, '.') == NULL;
 	parser->current->value_type = is_integer ? CSON_INTEGER_VALUE_TYPE : CSON_REAL_VALUE_TYPE;
 	if (is_integer)
 		parser->current->value.integer = ft_atoi(parser->buffer);
 	else
-		parser->current->value.real = ft_atoi(parser->buffer); // TODO: add real number parse method
+		parser->current->value.real = ft_atod(parser->buffer);
 	return (TRUE);
 }
 

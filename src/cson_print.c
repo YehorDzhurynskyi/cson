@@ -32,10 +32,12 @@ static void	print_node(const t_cson *cson)
 		ft_printf(" real(%f)", cson->value.real);
 	else if (cson->value_type == CSON_BOOLEAN_VALUE_TYPE)
 		ft_printf(" bool(%s)", cson->value.boolean == FALSE ? "false" : "true");
-	else if (cson->value_type == CSON_OBJECT_VALUE_TYPE && cson->value.tuple->size == 0)
-		ft_printf(" {}");
-	else if (cson->value_type == CSON_OBJECT_VALUE_TYPE && cson->value.tuple->size != 0)
+	else if (cson->value_type == CSON_OBJECT_VALUE_TYPE)
+	{
 		ft_printf(" (object)");
+		if (cson->value.tuple->size == 0)
+			ft_printf(" {}");
+	}
 	else if (cson->value_type == CSON_ARRAY_VALUE_TYPE)
 		ft_printf(" (array)");
 	ft_putchar('\n');

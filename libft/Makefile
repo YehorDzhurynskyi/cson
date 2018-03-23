@@ -7,7 +7,7 @@ LIBFT_OBJ_DIR	:=	./obj/
 CFLAGS			:=	-c -Wall -Wextra -Werror
 INCLUDE			:=	./include
 CC				:=	gcc
-INCLUDE			:=	-I./include/
+INCLUDE			:=	-I./include/ -I.
 
 all: $(LIBFT)
 
