@@ -48,14 +48,14 @@ static t_bool	cson_assign_boolean(t_cson_parser *parser, int value)
 	if (value == TRUE && (parser->buffer_offset < 4
 	|| !ft_strnequ("true", parser->buffer, parser->buffer_offset)))
 	{
-		cson_log_error(parser, "wrong value (did you mean \"true\"?)",
+		cson_log_error(parser, "invalid value (did you mean \"true\"?)",
 		CSON_VALUE_PARSING_ERROR);
 		return (FALSE);
 	}
 	else if (value == FALSE && (parser->buffer_offset < 5
 	|| !ft_strnequ("false", parser->buffer, parser->buffer_offset)))
 	{
-		cson_log_error(parser, "wrong value (did you mean \"false\"?)",
+		cson_log_error(parser, "invalid value (did you mean \"false\"?)",
 		CSON_VALUE_PARSING_ERROR);
 		return (FALSE);
 	}

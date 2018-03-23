@@ -19,12 +19,12 @@ char	*ft_get_basename_part(const char *filepath)
 {
 	char	*last_slash;
 
-	last_slash = ft_strnchr(filepath, '/', -1);
+	last_slash = ft_strchrn(filepath, '/', -1);
 	if (!last_slash)
 		return ((char *)filepath);
 	if (!*(last_slash + 1))
 	{
-		last_slash = ft_strnchr(filepath, '/', -2);
+		last_slash = ft_strchrn(filepath, '/', -2);
 		if (!last_slash)
 			return ((char *)filepath);
 	}

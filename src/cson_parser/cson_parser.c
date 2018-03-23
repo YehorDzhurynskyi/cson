@@ -60,7 +60,7 @@ void					cson_parse_chunk(t_cson_parser *parser, const char *buffer, size_t size
 	{
 		if (buffer[i] == '\n')
 			parser->current_line++;
-		//ft_printf("STATE IS = %d, CHAR IS = %c\n", parser->state, buffer[i]);
+		// ft_printf("STATE IS = %d, CHAR IS = %c\n", parser->state, buffer[i]);
 		state_handler = determine_state_handler(parser->state);
 		status = state_handler(parser, buffer[i]);
 		if (status == handler_error)
@@ -80,20 +80,24 @@ void					cson_parse_chunk(t_cson_parser *parser, const char *buffer, size_t size
 	}
 }
 
-t_cson_parser			cson_init_parser(void)
+t_bool					cson_init_parser(t_cson_parser *parser)
 {
-	t_cson_parser	parser;
-
-	parser.root = cson_alloc(NULL);
-	parser.root->value.tuple = alst_create(3);
-	parser.root->value_type = CSON_OBJECT_VALUE_TYPE;
-	parser.current = parser.root;
-	parser.parent = parser.root;
-	parser.state = CSON_PARSER_BEFORE_KEY_STATE;
-	parser.buffer_size = CSON_PARSER_BSIZE;
-	parser.buffer = (char*)malloc(sizeof(char) * parser.buffer_size);
-	parser.buffer_offset = 0;
-	parser.current_line = 1;
-	parser.err = 0;
-	return (parser);
+	parser->root = cson_alloc(NULL);
+	parser->root->value.tuple = alst_create(3);
+	parser->root->value_type = CSON_OBJECT_VALUE_TYPE;
+	parser->current = parser->root;
+	parser->parent = parser->root;
+	parser->state = CSON_PARSER_BEFORE_KEY_STATE;
+	parser->buffer_size = CSON_PARSER_BSIZE;
+	parser->buffer = (char*)malloc(sizeof(char) * parser->buffer_size);
+	parser->buffer_offset = 0;
+	parser->current_line = 1;
+	parser->err = 0;
+	if (parser->root == NULL || parser->root->value.tuple == NULL || parser->buffer == NULL)
+	{
+		cson_log_error(parser, strerror(errno), CSON_MEM_ALLOC_ERROR);
+		cson_free_parser(parser);
+		return (FALSE);
+	}
+	return (TRUE);
 }

@@ -15,12 +15,12 @@
 void	cson_log_parsing_error(t_cson_parser *parser, const char *msg, char error_symbol, int errcode)
 {
 	parser->err = errcode;
-	ft_printf_fd(2, "[%#x] CSON Parsing error on line(%d): %s on symbol"
+	ft_printf_fd(2, "[%#x] CSON Parsing error (on line: %d): %s on symbol"
 	"- '%c' (ascii code is %d)\n", errcode, parser->current_line, msg, error_symbol, (int)error_symbol);
 }
 
 void	cson_log_error(t_cson_parser *parser, const char *msg, int errcode)
 {
 	parser->err = errcode;
-	ft_printf_fd(2, "[%#x] CSON Parsing error on line(%d): %s\n", errcode, parser->current_line, msg);
+	ft_printf_fd(2, "[%#x] CSON Parsing error (on line: %d): %s\n", errcode, parser->current_line, msg);
 }

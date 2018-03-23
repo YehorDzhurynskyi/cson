@@ -56,7 +56,7 @@ struct				s_cson_parser
 void				cson_log_parsing_error(t_cson_parser *parser, const char *msg, char error_symbol, int errcode);
 void				cson_log_error(t_cson_parser *parser, const char *msg, int errcode);
 t_cson				*cson_alloc(t_cson *is_root);
-t_cson_parser		cson_init_parser(void);
+t_bool				cson_init_parser(t_cson_parser *parser);
 void				cson_free_parser(t_cson_parser *parser);
 void				cson_parse_chunk(t_cson_parser *parser, const char *buffer, size_t size);
 

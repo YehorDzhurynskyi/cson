@@ -35,27 +35,28 @@ void	cson_free_parser(t_cson_parser *parser)
 	parser->root = NULL;
 }
 
-t_cson		*cson_parse_file(const char *filename, int *err)
+static void	*shutdown_parsing(t_cson_parser *parser, int fd, int errcode)
+{
+	cson_log_error(parser, strerror(errno), errcode);
+	cson_free_parser(parser);
+	if (fd != -1)
+		close(fd);
+	return (NULL);
+}
+
+t_cson	*cson_parse_file(const char *filename, int *err)
 {
 	int				fd;
 	t_cson_parser	parser;
 	char			buffer[CSON_PARSER_BSIZE + 1];
 	ssize_t			ret;
 
-	parser = cson_init_parser();
-	if (parser.root == NULL || parser.root->value.tuple == NULL || parser.buffer == NULL)
-	{
-		cson_log_error(&parser, strerror(errno), CSON_MEM_ALLOC_ERROR);
-		cson_free_parser(&parser);
+	fd = -1;
+	if (cson_init_parser(&parser) == FALSE)
 		return (NULL);
-	}
 	fd = open(filename, O_RDONLY);
 	if (fd < 0)
-	{
-		cson_log_error(&parser, strerror(errno), CSON_FILE_OPENING_ERROR);
-		cson_free_parser(&parser);
-		return (NULL);
-	}
+		return (shutdown_parsing(&parser, fd, CSON_FILE_OPENING_ERROR));
 	while ((ret = read(fd, buffer, CSON_PARSER_BSIZE)) > 0)
 	{
 		cson_parse_chunk(&parser, buffer, (size_t)ret);
@@ -63,10 +64,7 @@ t_cson		*cson_parse_file(const char *filename, int *err)
 			break ;
 	}
 	if (ret < 0)
-	{
-		cson_log_error(&parser, strerror(errno), CSON_FILE_READING_ERROR);
-		cson_free_parser(&parser);
-	}
+		return (shutdown_parsing(&parser, fd, CSON_FILE_READING_ERROR));
 	if (parser.err == 0 && cson_flush_buffer(&parser) == FALSE)
 		cson_free_parser(&parser);
 	close(fd);

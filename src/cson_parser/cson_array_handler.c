@@ -15,19 +15,19 @@
 t_handler_status	cson_array_handler(t_cson_parser *parser, char ch)
 {
 #if 0
-	parser->state = CSON_PARSER_BEFORE_VALUE_STATE;
+	parser->current->value_type = CSON_ARRAY_VALUE_TYPE;
 	parser->current->value.tuple = alst_create(3);
 	if (parser->current->value.tuple == NULL)
 	{
-		cson_log_error(strerror(errno), err, CSON_MEM_ALLOC_ERROR);
+		cson_log_error(parser, strerror(errno), CSON_MEM_ALLOC_ERROR);
 		return (handler_error);
 	}
-	parser->current->value_type = CSON_OBJECT_VALUE_TYPE;
+	parser->state = CSON_PARSER_BEFORE_VALUE_STATE;
 	parser->parent = parser->current;
-	return (cson_before_value_handler(parser, ch, err));
+	return (cson_before_value_handler(parser, ch));
 #else
-	(void)parser;
 	(void)ch;
-	return (handler_skip);
+	cson_log_error(parser, "this library doesn't support arrays yet", CSON_VALUE_PARSING_ERROR);
+	return (handler_error);
 #endif
 }

@@ -26,7 +26,7 @@ include $(LIBFT_DIR)libft.mk
 include ./cson.mk
 
 #	basic test
-btest: ./test/basic_tests.c $(LIBFT) $(CSON)
+btest: ./test/parsing_tests.c $(LIBFT) $(CSON)
 	$(CC) -DSAMPLE_DIR="\"/Users/ydzhuryn/forgitln/cson/test/samples/\"" -I. -I./libft/ $< -L. -lcson -L./libft/ -lft -o $@
 
 

@@ -17,13 +17,8 @@ t_cson	*cson_parse_str(const char *str, size_t size, int *err)
 {
 	t_cson_parser	parser;
 
-	parser = cson_init_parser();
-	if (parser.root == NULL || parser.root->value.tuple == NULL || parser.buffer == NULL)
-	{
-		cson_log_error(&parser, strerror(errno), CSON_MEM_ALLOC_ERROR);
-		cson_free_parser(&parser);
+	if (cson_init_parser(&parser) == FALSE)
 		return (NULL);
-	}
 	cson_parse_chunk(&parser, str, size);
 	if (cson_flush_buffer(&parser) == FALSE)
 		cson_free_parser(&parser);

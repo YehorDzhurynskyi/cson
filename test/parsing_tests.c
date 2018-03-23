@@ -40,6 +40,7 @@ int		main(void)
 	addr = 0xFFFFFFFFFFFFFFFF;
 	addr &= perform_test(SAMPLE_DIR "simple_pairs.cson");
 	addr &= perform_test(SAMPLE_DIR "tree_pairs.cson");
+	addr &= perform_test(SAMPLE_DIR "large.cson");
 	printf("%s\n", !addr ? FAIL : SUCCESS);
 
 	printf("BASIC ERRORS TESTS:\n");
@@ -107,6 +108,17 @@ int		main(void)
 	addr |= perform_test(SAMPLE_DIR "bool/error_bool8.cson");
 	addr |= perform_test(SAMPLE_DIR "bool/error_bool9.cson");
 	printf("%s\n", addr ? FAIL : SUCCESS);
+
+	/*
+	**	ARRAY
+	*/
+	printf("ARRAY TESTS:\n");
+	addr = 0xFFFFFFFFFFFFFFFF;
+	addr &= perform_test(SAMPLE_DIR "array/array_string.cson");
+	printf("%s\n", !addr ? FAIL : SUCCESS);
+
+	printf("ARRAY ERROR TESTS:\n");
+	addr = 0;
 #if 1
 	system("leaks btest | tail -n 1");
 #else
