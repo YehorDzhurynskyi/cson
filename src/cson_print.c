@@ -12,16 +12,8 @@
 
 #include "cson.h"
 
-static void	print_node(const t_cson *cson)
+inline static void	print_primitive_value(const t_cson *cson)
 {
-	int	depth;
-
-	if (cson->parent == NULL)
-		return ;
-	depth = cson_depth_of_node(cson) - 1;
-	while (depth--)
-		ft_putchar('\t');
-	ft_printf("%s:", cson->key);
 	if (cson->value_type == CSON_UNDEFINED_VALUE_TYPE)
 		ft_printf(" undefined");
 	else if (cson->value_type == CSON_STRING_VALUE_TYPE)
@@ -32,14 +24,39 @@ static void	print_node(const t_cson *cson)
 		ft_printf(" real(%f)", cson->value.real);
 	else if (cson->value_type == CSON_BOOLEAN_VALUE_TYPE)
 		ft_printf(" bool(%s)", cson->value.boolean == FALSE ? "false" : "true");
-	else if (cson->value_type == CSON_OBJECT_VALUE_TYPE)
+}
+
+inline static void	print_composite_value(const t_cson *cson)
+{
+	if (cson->value_type == CSON_OBJECT_VALUE_TYPE)
 	{
 		ft_printf(" (object)");
 		if (cson->value.tuple->size == 0)
 			ft_printf(" {}");
 	}
 	else if (cson->value_type == CSON_ARRAY_VALUE_TYPE)
+	{
 		ft_printf(" (array)");
+			if (cson->value.tuple->size == 0)
+				ft_printf(" []");
+	}
+}
+
+static void	print_node(const t_cson *cson)
+{
+	int	depth;
+
+	if (cson->parent == NULL)
+		return ;
+	depth = cson_depth_of_node(cson) - 1;
+	while (depth--)
+		ft_putchar('\t');
+	ft_printf("\"%s\":", cson->key);
+	if (cson->value_type == CSON_OBJECT_VALUE_TYPE
+	|| cson->value_type == CSON_ARRAY_VALUE_TYPE)
+		print_composite_value(cson);
+	else
+		print_primitive_value(cson);
 	ft_putchar('\n');
 }
 

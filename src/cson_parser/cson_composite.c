@@ -12,34 +12,29 @@
 
 #include "cson_parser.h"
 
-static t_bool		assign_object(t_cson_parser *parser)
+static t_handler_status	create_composite_value(t_cson_parser *parser,
+int state, int value_type)
 {
-	parser->current->value_type = CSON_OBJECT_VALUE_TYPE;
+	parser->parent = parser->current;
 	parser->current->value.tuple = alst_create(3);
+	parser->state = state;
+	parser->current->value_type = value_type;
 	if (parser->current->value.tuple == NULL)
 	{
 		cson_log_error(parser, strerror(errno), CSON_MEM_ALLOC_ERROR);
-		return (FALSE);
+		return (handler_error);
 	}
-	return (TRUE);
+	return (handler_skip);
 }
 
-t_handler_status	cson_empty_object_handler(t_cson_parser *parser, char ch)
+t_handler_status		cson_compose_array(t_cson_parser *parser)
 {
-	if (ch == '}')
-	{
-		parser->state = CSON_PARSER_EOV_STATE;
-		return (assign_object(parser) == FALSE ? handler_error : handler_skip);
-	}
-	cson_log_parsing_error(parser, "unrecognized symbol in empty object value, should be \"{}\"",
-	ch, CSON_KEY_PARSING_ERROR);
-	return (handler_error);
+	return (create_composite_value(parser,
+	CSON_PARSER_BEFORE_VALUE_STATE, CSON_ARRAY_VALUE_TYPE));
 }
 
-t_handler_status	cson_object_handler(t_cson_parser *parser, char ch)
+t_handler_status		cson_compose_object(t_cson_parser *parser)
 {
-	parser->state = CSON_PARSER_BEFORE_KEY_STATE;
-	parser->parent = parser->current;
-	return (assign_object(parser) == FALSE
-	? handler_error : cson_before_key_handler(parser, ch));
+	return (create_composite_value(parser,
+	CSON_PARSER_BEFORE_KEY_STATE, CSON_OBJECT_VALUE_TYPE));
 }

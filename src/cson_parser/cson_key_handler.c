@@ -12,46 +12,18 @@
 
 #include "cson_parser.h"
 
-t_handler_status	cson_before_value_handler(t_cson_parser *parser, char ch)
+t_handler_status		cson_after_key_handler(t_cson_parser *parser, char ch)
 {
-	if (ft_isws(ch))
-		return (handler_skip);
-	else if (ch == '[')
+	if (ch == '\n')
 	{
-		parser->state = CSON_PARSER_ARRAY_VALUE_STATE;
-		return (handler_skip);
-	}
-	else if (ch == 't')
-		parser->state = CSON_PARSER_TRUE_VALUE_STATE;
-	else if (ch == 'f')
-		parser->state = CSON_PARSER_FALSE_VALUE_STATE;
-	else if (ch == '\'' || ch == '"')
-		parser->state = CSON_PARSER_STRING_VALUE_STATE;
-	else if (ft_isdigit(ch) || ch == '+' || ch == '-')
-		parser->state = CSON_PARSER_NUMBER_VALUE_STATE;
-	else
-	{
-		cson_log_parsing_error(parser, "unrecognized symbol before a value",
-		ch, CSON_KEY_PARSING_ERROR);
-		return (handler_error);
-	}
-	return (handler_record);
-}
-
-t_handler_status	cson_after_key_handler(t_cson_parser *parser, char ch)
-{
-	if (ch == '\n' || ch == '{')
-	{
-		if (ch == '\n')
-			parser->state = CSON_PARSER_OBJECT_VALUE_STATE;
-		else if (ch == '{')
-			parser->state = CSON_PARSER_EMPTY_OBJECT_VALUE_STATE;
-		return (handler_skip);
+		if (cson_create_node(parser) == FALSE)
+			return (handler_error);
+		return (cson_compose_object(parser));
 	}
 	return (cson_before_value_handler(parser, ch));
 }
 
-t_handler_status	cson_key_handler(t_cson_parser *parser, char ch)
+t_handler_status		cson_key_handler(t_cson_parser *parser, char ch)
 {
 	if (ch == ':')
 	{
@@ -61,21 +33,10 @@ t_handler_status	cson_key_handler(t_cson_parser *parser, char ch)
 			ch, CSON_KEY_PARSING_ERROR);
 			return (handler_error);
 		}
-		parser->current = cson_alloc(parser->parent);
-		if (parser->current == NULL)
-		{
-			cson_log_error(parser, strerror(errno), CSON_MEM_ALLOC_ERROR);
-			return (handler_error);
-		}
-		alst_add(parser->parent->value.tuple, parser->current);
-		parser->current->key = ft_strsub(parser->buffer, 0, parser->buffer_offset);
-		if (parser->current->key == NULL)
-		{
-			cson_log_error(parser, strerror(errno), CSON_MEM_ALLOC_ERROR);
-			return (handler_error);
-		}
-		parser->state = CSON_PARSER_AFTER_KEY_STATE;
-		parser->buffer_offset = 0;
+		// FIXME: not sure about this
+		// the idea is that bounded object can't have unbounded children
+		parser->state = parser->bounded_object_depth == 0
+		? CSON_PARSER_AFTER_KEY_STATE : CSON_PARSER_BEFORE_VALUE_STATE;
 		return (handler_skip);
 	}
 	if (!ft_isalpha(ch))
@@ -87,31 +48,43 @@ t_handler_status	cson_key_handler(t_cson_parser *parser, char ch)
 	return (handler_record);
 }
 
-t_handler_status	cson_before_key_handler(t_cson_parser *parser, char ch)
+static t_bool			update_parent_node(t_cson_parser *parser)
 {
 	int	depth;
 	int	i;
 
+	depth = cson_depth_of_node(parser->parent);
+	if (parser->buffer_offset - depth > 0)
+	{
+		cson_log_error(parser, "bad identation before key",
+		CSON_KEY_PARSING_ERROR);
+		return (FALSE);
+	}
+	i = 0;
+	while (i++ < depth - parser->buffer_offset)
+		parser->parent = parser->parent->parent;
+	return (TRUE);
+}
+
+inline static t_bool	should_update_parent(const t_cson_parser *parser)
+{
+	return (parser->parent != parser->root /* FIXME: not sure about this condition */ && parser->bounded_object_depth == 0);
+}
+
+//	TODO: this function should set some flag if key is string bounded with " or '
+//	which will affect on way of key parsing in key_handler method
+t_handler_status		cson_before_key_handler(t_cson_parser *parser, char ch)
+{
 	if (ft_isalpha(ch))
 	{
-		if (parser->parent != parser->root)
-		{
-			depth = cson_depth_of_node(parser->parent);
-			if (parser->buffer_offset - depth > 0)
-			{
-				cson_log_error(parser, "bad identation before key",
-				CSON_KEY_PARSING_ERROR);
-				return (handler_error);
-			}
-			i = 0;
-			while (i++ < depth - parser->buffer_offset)
-				parser->parent = parser->parent->parent;
-		}
+		 // TODO: if it's bounded object, then no need to calculate new parent
+		if (should_update_parent(parser) && update_parent_node(parser) == FALSE)
+			return (handler_error);
 		parser->state = CSON_PARSER_KEY_STATE;
 		parser->buffer_offset = 0;
 		return (handler_record);
 	}
-	else if (ch != '\t' && ft_isws(ch))
+	else if (ft_isws(ch) && ch != '\t')
 	{
 		parser->buffer_offset = 0;
 		return (handler_skip);

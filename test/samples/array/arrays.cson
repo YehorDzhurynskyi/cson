@@ -1,0 +1,33 @@
+emptyarray: []
+complexarray: [
+	1213
+	1488
+	123
+	true
+	'
+
+
+	multistring
+
+
+	'
+	{
+		nestedint: 14
+		nestedstr: 'string in nested anonymous object'
+	}
+	[
+		'a' 'b' 'c'
+		[
+			1
+			2
+			3
+			{
+				nestednestedint: 42
+				nestednestedstr: 'asdasdasdsa nested nested'
+			}
+		]
+		'after a' 'after b' 'after c'
+	]
+	{}
+	[]
+]

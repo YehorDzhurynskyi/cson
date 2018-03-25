@@ -24,7 +24,7 @@ static long long	perform_test(const char *file)
 	printf(" === File test: %s\n", file);
 	cson = cson_parse_file(file, &err);
 	addr = (long long)cson;
-	// cson_print(cson);
+	cson_print(cson);
 	cson_free(cson);
 	return (addr);
 }
@@ -115,10 +115,12 @@ int		main(void)
 	printf("ARRAY TESTS:\n");
 	addr = 0xFFFFFFFFFFFFFFFF;
 	addr &= perform_test(SAMPLE_DIR "array/array_string.cson");
+	addr &= perform_test(SAMPLE_DIR "array/arrays.cson");
 	printf("%s\n", !addr ? FAIL : SUCCESS);
 
 	printf("ARRAY ERROR TESTS:\n");
 	addr = 0;
+	printf("%s\n", addr ? FAIL : SUCCESS);
 #if 1
 	system("leaks btest | tail -n 1");
 #else

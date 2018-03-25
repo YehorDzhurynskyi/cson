@@ -21,15 +21,36 @@ static t_state_handler	determine_state_handler(int state)
 		cson_after_key_handler,
 		cson_before_value_handler,
 		cson_string_handler,
-		cson_array_handler,
-		cson_empty_object_handler,
-		cson_object_handler,
 		cson_number_handler,
 		cson_boolean_handler,
 		cson_boolean_handler,
 		cson_eov_handler
 	};
 	return (state_handler_pool[state]);
+}
+
+static t_bool			symbol_preprocessing(t_cson_parser *parser, char ch)
+{
+	if (ch == '\n')
+		parser->current_line++;
+	else if (parser->state != CSON_PARSER_KEY_STATE && parser->state != CSON_PARSER_STRING_VALUE_STATE)
+	{
+		if (ch == ']')
+			parser->array_depth--;
+		else if (ch == '[')
+			parser->array_depth++;
+		else if (ch == '}')
+			parser->bounded_object_depth--;
+		else if (ch == '{')
+			parser->bounded_object_depth++;
+	}
+	if (ch == ']' || ch == '}')
+	{
+		parser->parent = parser->parent->parent;
+		parser->state = CSON_PARSER_EOV_STATE;
+		parser->buffer_offset = 0;
+	}
+	return (ch == ']' || ch == '}');
 }
 
 void					cson_parse_chunk(t_cson_parser *parser, const char *buffer, size_t size)
@@ -41,22 +62,21 @@ void					cson_parse_chunk(t_cson_parser *parser, const char *buffer, size_t size
 	i = -1;
 	while (++i < (int)size)
 	{
-		if (buffer[i] == '\n')
-			parser->current_line++;
 		// ft_printf("STATE IS = %d, CHAR IS = %c\n", parser->state, buffer[i]);
+		if (symbol_preprocessing(parser, buffer[i]))
+			continue ;
 		state_handler = determine_state_handler(parser->state);
 		status = state_handler(parser, buffer[i]);
 		if (status == handler_error)
 			return ;
-		else if (status == handler_record)
+		if (status == handler_skip)
+			continue ;
+		if (cson_ensure_buffer_capacity(parser) == FALSE)
 		{
-			if (cson_ensure_buffer_capacity(parser) == FALSE)
-			{
-				cson_log_error(parser, strerror(errno), CSON_MEM_ALLOC_ERROR);
-				return ;
-			}
-			parser->buffer[parser->buffer_offset++] = buffer[i];
+			cson_log_error(parser, strerror(errno), CSON_MEM_ALLOC_ERROR);
+			return ;
 		}
+		parser->buffer[parser->buffer_offset++] = buffer[i];
 	}
 }
 
@@ -72,6 +92,8 @@ t_bool					cson_init_parser(t_cson_parser *parser, int *err)
 	parser->buffer = (char*)malloc(sizeof(char) * parser->buffer_size);
 	parser->buffer_offset = 0;
 	parser->current_line = 1;
+	parser->array_depth = 0;
+	parser->bounded_object_depth = 0;
 	parser->err = err;
 	if (parser->root == NULL || parser->root->value.tuple == NULL || parser->buffer == NULL)
 	{

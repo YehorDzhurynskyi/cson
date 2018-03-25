@@ -14,6 +14,13 @@
 
 t_handler_status	cson_eov_handler(t_cson_parser *parser, char ch)
 {
+	// FIXME: make this check more mnemonic
+	if (parser->array_depth != 0
+	&& parser->parent->value_type == CSON_ARRAY_VALUE_TYPE)
+	{
+		parser->state = CSON_PARSER_BEFORE_VALUE_STATE;
+		return (cson_before_value_handler(parser, ch));
+	}
 	if (ft_isws(ch) == FALSE)
 	{
 		cson_log_parsing_error(parser, "unrecognized symbol after the value",

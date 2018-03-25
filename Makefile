@@ -19,9 +19,6 @@ CSON_OBJ_DIR	:=	./obj/
 
 all: $(CSON)
 
-include ./src/src.mk
-include ./src/cson_parser/cson_parser.mk
-include ./src/cson_navigator/cson_navigator.mk
 include $(LIBFT_DIR)libft.mk
 include ./cson.mk
 
