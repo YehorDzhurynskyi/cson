@@ -20,8 +20,5 @@ t_cson	*cson_parse_str(const char *str, size_t size, int *err)
 	if (cson_parser_init(&parser, err) == FALSE)
 		return (NULL);
 	cson_parse_chunk(&parser, str, size);
-	if (*parser.err != 0 || cson_flush_buffer(&parser) == FALSE)
-		cson_parser_fail(&parser);
-	cson_parser_free(&parser);
-	return (parser.root);
+	return (cson_parser_done(&parser));
 }

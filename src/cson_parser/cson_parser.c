@@ -133,3 +133,11 @@ void					cson_parser_fail(t_cson_parser *parser)
 	parser->buffer = NULL;
 	parser->root = NULL;
 }
+
+t_cson					*cson_parser_done(t_cson_parser *parser)
+{
+	if (*parser->err != 0 || cson_flush_buffer(parser) == FALSE)
+		cson_parser_fail(parser);
+	cson_parser_free(parser);
+	return (parser->root);
+}

@@ -17,28 +17,30 @@
 #include <errno.h>
 #include <stdlib.h>
 
-static void	*shutdown_parsing(t_cson_parser *parser, int fd, int errcode)
+static t_bool	open_cson_file(const char *filename, t_cson_parser *parser)
 {
-	cson_log_error(parser, strerror(errno), errcode);
-	cson_parser_fail(parser);
-	if (fd != -1)
-		close(fd);
-	return (NULL);
+	int	fd;
+
+	fd = open(filename, O_RDONLY);
+	if (fd < 0)
+	{
+		cson_log_error(parser, strerror(errno), CSON_FILE_OPENING_ERROR);
+		cson_parser_fail(parser);
+	}
+	return (fd);
 }
 
-t_cson		*cson_parse_file(const char *filename, int *err)
+t_cson			*cson_parse_file(const char *filename, int *err)
 {
 	int				fd;
 	t_cson_parser	parser;
 	char			buffer[CSON_PARSER_BSIZE + 1];
 	ssize_t			ret;
 
-	fd = -1;
 	if (cson_parser_init(&parser, err) == FALSE)
 		return (NULL);
-	fd = open(filename, O_RDONLY);
-	if (fd < 0)
-		return (shutdown_parsing(&parser, fd, CSON_FILE_OPENING_ERROR));
+	if ((fd = open_cson_file(filename, &parser)) < 0)
+		return (NULL);
 	while ((ret = read(fd, buffer, CSON_PARSER_BSIZE)) > 0)
 	{
 		cson_parse_chunk(&parser, buffer, (size_t)ret);
@@ -46,10 +48,10 @@ t_cson		*cson_parse_file(const char *filename, int *err)
 			break ;
 	}
 	if (ret < 0)
-		return (shutdown_parsing(&parser, fd, CSON_FILE_READING_ERROR));
-	if (*parser.err != 0 || cson_flush_buffer(&parser) == FALSE)
+	{
+		cson_log_error(&parser, strerror(errno), CSON_FILE_READING_ERROR);
 		cson_parser_fail(&parser);
+	}
 	close(fd);
-	cson_parser_free(&parser);
-	return (parser.root);
+	return (cson_parser_done(&parser));
 }

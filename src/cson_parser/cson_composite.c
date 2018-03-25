@@ -27,13 +27,13 @@ int state, int value_type)
 	return (handler_skip);
 }
 
-t_handler_status		cson_compose_array(t_cson_parser *parser)
+inline t_handler_status	cson_compose_array(t_cson_parser *parser)
 {
 	return (create_composite_value(parser,
 	CSON_PARSER_BEFORE_VALUE_STATE, CSON_ARRAY_VALUE_TYPE));
 }
 
-t_handler_status		cson_compose_object(t_cson_parser *parser)
+inline t_handler_status	cson_compose_object(t_cson_parser *parser)
 {
 	return (create_composite_value(parser,
 	CSON_PARSER_BEFORE_KEY_STATE, CSON_OBJECT_VALUE_TYPE));

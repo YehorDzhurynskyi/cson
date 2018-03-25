@@ -39,4 +39,3 @@ t_bool	cson_flush_buffer(t_cson_parser *parser)
 	}
 	return (cson_assign_value(parser));
 }
-

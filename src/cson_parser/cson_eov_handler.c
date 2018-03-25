@@ -12,11 +12,15 @@
 
 #include "cson_parser.h"
 
-t_handler_status	cson_eov_handler(t_cson_parser *parser, char ch)
+inline static t_bool	inside_array(const t_cson_parser *parser)
 {
-	// FIXME: make this check more mnemonic
-	if (parser->array_depth != 0
-	&& parser->parent->value_type == CSON_ARRAY_VALUE_TYPE)
+	return (parser->array_depth != 0
+	&& parser->parent->value_type == CSON_ARRAY_VALUE_TYPE);
+}
+
+t_handler_status		cson_eov_handler(t_cson_parser *parser, char ch)
+{
+	if (inside_array(parser))
 	{
 		parser->state = CSON_PARSER_BEFORE_VALUE_STATE;
 		return (cson_before_value_handler(parser, ch));
