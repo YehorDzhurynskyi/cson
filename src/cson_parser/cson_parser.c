@@ -13,6 +13,9 @@
 #include "cson_parser.h"
 #include <stdlib.h>
 
+#define ARRAY_BRACKETS_ERROR_MSG	"wrong number of '[]' (array brackets)"
+#define OBJECT_BRACKETS_ERROR_MSG	"wrong number of '{}' (object brackets)"
+
 static t_state_handler	determine_state_handler(int state)
 {
 	static t_state_handler	state_handler_pool[] = {
@@ -80,7 +83,7 @@ void					cson_parse_chunk(t_cson_parser *parser, const char *buffer, size_t size
 	}
 }
 
-t_bool					cson_init_parser(t_cson_parser *parser, int *err)
+t_bool					cson_parser_init(t_cson_parser *parser, int *err)
 {
 	parser->root = cson_alloc(NULL);
 	parser->root->value.tuple = alst_create(3);
@@ -95,16 +98,35 @@ t_bool					cson_init_parser(t_cson_parser *parser, int *err)
 	parser->array_depth = 0;
 	parser->bounded_object_depth = 0;
 	parser->err = err;
+	*parser->err = 0;
 	if (parser->root == NULL || parser->root->value.tuple == NULL || parser->buffer == NULL)
 	{
 		cson_log_error(parser, strerror(errno), CSON_MEM_ALLOC_ERROR);
-		cson_free_parser(parser);
+		cson_parser_fail(parser);
 		return (FALSE);
 	}
 	return (TRUE);
 }
 
-void					cson_free_parser(t_cson_parser *parser)
+void					cson_parser_free(t_cson_parser *parser)
+{
+	if (parser->root && parser->root->value.tuple->size == 0)
+	{
+		cson_log_error(parser, "input data is empty", CSON_EMPTY_DATA_PARSING_ERROR);
+		cson_parser_fail(parser);
+	}
+	if (parser->array_depth != 0 || parser->bounded_object_depth != 0)
+	{
+
+		cson_log_error(parser, parser->array_depth != 0
+		? ARRAY_BRACKETS_ERROR_MSG : OBJECT_BRACKETS_ERROR_MSG,
+		CSON_BRACKETS_PARSING_ERROR);
+		cson_parser_fail(parser);
+	}
+	free(parser->buffer);
+}
+
+void					cson_parser_fail(t_cson_parser *parser)
 {
 	cson_free(parser->root);
 	free(parser->buffer);

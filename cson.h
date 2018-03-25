@@ -15,6 +15,8 @@
 
 # include "ft.h"
 
+# define CSON_PARSER_BSIZE	4096
+
 # define CSON_UNDEFINED_VALUE_TYPE	0x0
 # define CSON_STRING_VALUE_TYPE		0x1
 # define CSON_INTEGER_VALUE_TYPE	0x2
@@ -23,11 +25,13 @@
 # define CSON_ARRAY_VALUE_TYPE		0x5
 # define CSON_OBJECT_VALUE_TYPE		0x6
 
-# define CSON_MEM_ALLOC_ERROR		0x1
-# define CSON_FILE_OPENING_ERROR	0x2
-# define CSON_FILE_READING_ERROR	0x3
-# define CSON_KEY_PARSING_ERROR		0x4
-# define CSON_VALUE_PARSING_ERROR	0x5
+# define CSON_MEM_ALLOC_ERROR			0x1
+# define CSON_FILE_OPENING_ERROR		0x2
+# define CSON_FILE_READING_ERROR		0x3
+# define CSON_KEY_PARSING_ERROR			0x4
+# define CSON_VALUE_PARSING_ERROR		0x5
+# define CSON_BRACKETS_PARSING_ERROR	0x6
+# define CSON_EMPTY_DATA_PARSING_ERROR	0x7
 
 typedef union u_cson_value	t_cson_value;
 union				u_cson_value

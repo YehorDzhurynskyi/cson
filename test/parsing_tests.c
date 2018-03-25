@@ -45,7 +45,8 @@ int		main(void)
 
 	printf("BASIC ERRORS TESTS:\n");
 	addr = 0;
-	addr |= perform_test("absentfile.cson");
+	addr |= perform_test(SAMPLE_DIR "absentfile.cson");
+	addr |= perform_test(SAMPLE_DIR "empty_file.cson");
 	printf("%s\n", addr ? FAIL : SUCCESS);
 
 	/*
@@ -120,6 +121,26 @@ int		main(void)
 
 	printf("ARRAY ERROR TESTS:\n");
 	addr = 0;
+	addr |= perform_test(SAMPLE_DIR "array/error_array1.cson");
+	addr |= perform_test(SAMPLE_DIR "array/error_array2.cson");
+	addr |= perform_test(SAMPLE_DIR "array/error_array3.cson");
+	addr |= perform_test(SAMPLE_DIR "array/error_array4.cson");
+	addr |= perform_test(SAMPLE_DIR "array/error_array5.cson");
+	addr |= perform_test(SAMPLE_DIR "array/error_array6.cson");
+	addr |= perform_test(SAMPLE_DIR "array/error_array7.cson");
+	printf("%s\n", addr ? FAIL : SUCCESS);
+
+	/*
+	**	OBJECT
+	*/
+	printf("OBJECT ERROR TESTS:\n");
+	addr = 0;
+	addr |= perform_test(SAMPLE_DIR "object/error_object1.cson");
+	addr |= perform_test(SAMPLE_DIR "object/error_object2.cson");
+	addr |= perform_test(SAMPLE_DIR "object/error_object3.cson");
+	addr |= perform_test(SAMPLE_DIR "object/error_object4.cson");
+	addr |= perform_test(SAMPLE_DIR "object/error_object5.cson");
+	addr |= perform_test(SAMPLE_DIR "object/error_object6.cson");
 	printf("%s\n", addr ? FAIL : SUCCESS);
 #if 1
 	system("leaks btest | tail -n 1");

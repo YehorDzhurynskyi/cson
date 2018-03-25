@@ -20,7 +20,7 @@
 static void	*shutdown_parsing(t_cson_parser *parser, int fd, int errcode)
 {
 	cson_log_error(parser, strerror(errno), errcode);
-	cson_free_parser(parser);
+	cson_parser_fail(parser);
 	if (fd != -1)
 		close(fd);
 	return (NULL);
@@ -34,7 +34,7 @@ t_cson		*cson_parse_file(const char *filename, int *err)
 	ssize_t			ret;
 
 	fd = -1;
-	if (cson_init_parser(&parser, err) == FALSE)
+	if (cson_parser_init(&parser, err) == FALSE)
 		return (NULL);
 	fd = open(filename, O_RDONLY);
 	if (fd < 0)
@@ -48,8 +48,8 @@ t_cson		*cson_parse_file(const char *filename, int *err)
 	if (ret < 0)
 		return (shutdown_parsing(&parser, fd, CSON_FILE_READING_ERROR));
 	if (*parser.err != 0 || cson_flush_buffer(&parser) == FALSE)
-		cson_free_parser(&parser);
+		cson_parser_fail(&parser);
 	close(fd);
-	free(parser.buffer);
+	cson_parser_free(&parser);
 	return (parser.root);
 }
