@@ -42,14 +42,15 @@ static t_bool			symbol_preprocessing(t_cson_parser *parser, char ch)
 			parser->bounded_object_depth--;
 		else if (ch == '{')
 			parser->bounded_object_depth++;
+		if (ch == ']' || ch == '}')
+		{
+			parser->parent = parser->parent->parent;
+			parser->state = CSON_PARSER_EOV_STATE;
+			parser->buffer_offset = 0;
+			return (TRUE);
+		}
 	}
-	if (ch == ']' || ch == '}')
-	{
-		parser->parent = parser->parent->parent;
-		parser->state = CSON_PARSER_EOV_STATE;
-		parser->buffer_offset = 0;
-	}
-	return (ch == ']' || ch == '}');
+	return (FALSE);
 }
 
 void					cson_parse_chunk(t_cson_parser *parser, const char *buffer, size_t size)

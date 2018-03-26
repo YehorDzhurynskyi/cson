@@ -30,6 +30,15 @@ t_handler_status		cson_after_key_handler(t_cson_parser *parser, char ch)
 
 t_handler_status		cson_key_handler(t_cson_parser *parser, char ch)
 {
+	if (cson_is_quoted_key(parser))
+	{
+		if (ch == parser->buffer[0])
+		{
+			ft_memmove(parser->buffer, parser->buffer + 1, --parser->buffer_offset);
+			return (handler_skip);
+		}
+		return (handler_record);
+	}
 	if (ch == ':')
 	{
 		if (parser->buffer_offset == 0)
@@ -42,10 +51,10 @@ t_handler_status		cson_key_handler(t_cson_parser *parser, char ch)
 		? CSON_PARSER_AFTER_KEY_STATE : CSON_PARSER_BEFORE_VALUE_STATE;
 		return (handler_skip);
 	}
-	if (!ft_isalpha(ch))
+	if (!cson_is_key_symbol(ch))
 	{
 		cson_log_parsing_error(parser, "cson <key> should contain"
-		" only alpha characters", ch, CSON_KEY_PARSING_ERROR);
+		" only alphanumeric characters and '_'", ch, CSON_KEY_PARSING_ERROR);
 		return (handler_error);
 	}
 	return (handler_record);
@@ -69,11 +78,9 @@ static t_bool			update_parent_node(t_cson_parser *parser)
 	return (TRUE);
 }
 
-//	TODO: this function should set some flag if key is string bounded with " or '
-//	which will affect on way of key parsing in key_handler method
 t_handler_status		cson_before_key_handler(t_cson_parser *parser, char ch)
 {
-	if (ft_isalpha(ch))
+	if (cson_is_key_symbol(ch))
 	{
 		if (has_unbounded_parent(parser) && update_parent_node(parser) == FALSE)
 			return (handler_error);

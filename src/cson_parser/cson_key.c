@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cson_logger.h                                      :+:      :+:    :+:   */
+/*   cson_key.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ydzhuryn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,17 +12,13 @@
 
 #include "cson_parser.h"
 
-void	cson_log_parsing_error(t_cson_parser *parser, const char *msg, char error_symbol, int errcode)
+inline t_bool	cson_is_key_symbol(char ch)
 {
-	*parser->err = errcode;
-	ft_printf_fd(2, "[%#x] CSON Parsing error (on line: %d)"
-	" on symbol - '%c' (ascii code is %d): %s\n",
-	errcode, parser->current_line, error_symbol, (int)error_symbol, msg);
+	return (ft_isprint(ch) && ch != '#' && ch != ':'
+	&& ch != ' ');
 }
 
-void	cson_log_error(t_cson_parser *parser, const char *msg, int errcode)
+inline t_bool	cson_is_quoted_key(const t_cson_parser *parser)
 {
-	*parser->err = errcode;
-	ft_printf_fd(2, "[%#x] CSON Parsing error (on line: %d): %s\n",
-	errcode, parser->current_line, msg);
+	return (parser->buffer[0] == '\'' || parser->buffer[0] == '"');
 }

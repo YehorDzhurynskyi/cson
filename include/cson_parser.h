@@ -62,7 +62,8 @@ t_bool				cson_assign_value(t_cson_parser *parser);
 t_bool				cson_create_node(t_cson_parser *parser);
 t_handler_status	cson_compose_object(t_cson_parser *parser);
 t_handler_status	cson_compose_array(t_cson_parser *parser);
-
+t_bool				cson_is_key_symbol(char ch);
+t_bool				cson_is_quoted_key(const t_cson_parser *parser);
 /*
 **	Finite-state machine handlers
 */

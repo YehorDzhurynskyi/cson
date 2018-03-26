@@ -50,6 +50,20 @@ int		main(void)
 	printf("%s\n", addr ? FAIL : SUCCESS);
 
 	/*
+	**	KEY
+	*/
+	printf("KEY TESTS:\n");
+	addr = 0xFFFFFFFFFFFFFFFF;
+	addr &= perform_test(SAMPLE_DIR "key/keys.cson");
+	printf("%s\n", !addr ? FAIL : SUCCESS);
+
+	printf("KEY ERRORS TESTS:\n");
+	addr = 0;
+	addr |= perform_test(SAMPLE_DIR "key/error_key1.cson");
+	addr |= perform_test(SAMPLE_DIR "key/error_key2.cson");
+	printf("%s\n", addr ? FAIL : SUCCESS);
+
+	/*
 	**	STRING
 	*/
 	printf("STRING TESTS:\n");

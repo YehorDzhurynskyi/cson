@@ -7,6 +7,7 @@ CSON_CSON_PARSER_SRC	:=	cson_assignee.c\
 							cson_parser_buffer.c\
 							cson_composite.c\
 							cson_key_handler.c\
+							cson_key.c\
 							cson_boolean_handler.c\
 							cson_eov_handler.c\
 							cson_number_handler.c\
