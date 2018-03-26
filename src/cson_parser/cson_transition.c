@@ -29,8 +29,10 @@ static t_state_handler	determine_state_handler(int state)
 	return (state_handler_pool[state]);
 }
 
-static t_bool			symbol_preprocessing(t_cson_parser *parser, char ch)
+static t_handler_status	status_of_handler(t_cson_parser *parser, char ch)
 {
+	t_state_handler		state_handler;
+
 	if (ch == '\n')
 		parser->current_line++;
 	else if (parser->state != CSON_PARSER_KEY_STATE
@@ -46,29 +48,26 @@ static t_bool			symbol_preprocessing(t_cson_parser *parser, char ch)
 			parser->bounded_object_depth++;
 		if (ch == ']' || ch == '}')
 		{
+			if (cson_assign_value(parser) == FALSE)
+				return (handler_error);
 			parser->parent = parser->parent->parent;
-			parser->state = CSON_PARSER_EOV_STATE;
-			parser->buffer_offset = 0;
-			return (TRUE);
+			return (handler_skip);
 		}
 	}
-	return (FALSE);
+	state_handler = determine_state_handler(parser->state);
+	return (state_handler(parser, ch));
 }
 
 void					cson_parse_chunk(t_cson_parser *parser,
 const char *buffer, size_t size)
 {
 	int					i;
-	t_state_handler		state_handler;
 	t_handler_status	status;
 
 	i = -1;
 	while (++i < (int)size)
 	{
-		if (symbol_preprocessing(parser, buffer[i]))
-			continue ;
-		state_handler = determine_state_handler(parser->state);
-		status = state_handler(parser, buffer[i]);
+		status = status_of_handler(parser, buffer[i]);
 		if (status == handler_error)
 			return ;
 		if (status == handler_skip)
