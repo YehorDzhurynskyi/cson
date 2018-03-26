@@ -3,6 +3,7 @@ CSON_CSON_PARSER_SRC	:=	cson_assignee.c\
 							cson_file_parser.c\
 							cson_string_parser.c\
 							cson_parser.c\
+							cson_transition.c\
 							cson_parser_buffer.c\
 							cson_composite.c\
 							cson_key_handler.c\

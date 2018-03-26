@@ -12,7 +12,7 @@
 
 #include "cson_parser.h"
 
-inline static t_bool	inside_array(const t_cson_parser *parser)
+inline static t_bool	is_inside_array(const t_cson_parser *parser)
 {
 	return (parser->array_depth != 0
 	&& parser->parent->value_type == CSON_ARRAY_VALUE_TYPE);
@@ -20,7 +20,7 @@ inline static t_bool	inside_array(const t_cson_parser *parser)
 
 t_handler_status		cson_eov_handler(t_cson_parser *parser, char ch)
 {
-	if (inside_array(parser))
+	if (is_inside_array(parser))
 	{
 		parser->state = CSON_PARSER_BEFORE_VALUE_STATE;
 		return (cson_before_value_handler(parser, ch));

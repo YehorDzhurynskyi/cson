@@ -12,6 +12,11 @@
 
 #include "cson_parser.h"
 
+inline static t_bool	has_unbounded_parent(const t_cson_parser *parser)
+{
+	return (parser->bounded_object_depth == 0);
+}
+
 t_handler_status		cson_after_key_handler(t_cson_parser *parser, char ch)
 {
 	if (ch == '\n')
@@ -29,20 +34,18 @@ t_handler_status		cson_key_handler(t_cson_parser *parser, char ch)
 	{
 		if (parser->buffer_offset == 0)
 		{
-			cson_log_parsing_error(parser, "cson <key> can't be an empty string",
-			ch, CSON_KEY_PARSING_ERROR);
+			cson_log_parsing_error(parser, "cson <key> can't be"
+			" an empty string", ch, CSON_KEY_PARSING_ERROR);
 			return (handler_error);
 		}
-		// FIXME: not sure about this
-		// the idea is that bounded object can't have unbounded children
-		parser->state = parser->bounded_object_depth == 0
+		parser->state = has_unbounded_parent(parser)
 		? CSON_PARSER_AFTER_KEY_STATE : CSON_PARSER_BEFORE_VALUE_STATE;
 		return (handler_skip);
 	}
 	if (!ft_isalpha(ch))
 	{
-		cson_log_parsing_error(parser, "cson <key> should contain only alpha characters",
-		ch, CSON_KEY_PARSING_ERROR);
+		cson_log_parsing_error(parser, "cson <key> should contain"
+		" only alpha characters", ch, CSON_KEY_PARSING_ERROR);
 		return (handler_error);
 	}
 	return (handler_record);
@@ -66,19 +69,13 @@ static t_bool			update_parent_node(t_cson_parser *parser)
 	return (TRUE);
 }
 
-inline static t_bool	should_update_parent(const t_cson_parser *parser)
-{
-	return (parser->parent != parser->root /* FIXME: not sure about this condition */ && parser->bounded_object_depth == 0);
-}
-
 //	TODO: this function should set some flag if key is string bounded with " or '
 //	which will affect on way of key parsing in key_handler method
 t_handler_status		cson_before_key_handler(t_cson_parser *parser, char ch)
 {
 	if (ft_isalpha(ch))
 	{
-		 // TODO: if it's bounded object, then no need to calculate new parent
-		if (should_update_parent(parser) && update_parent_node(parser) == FALSE)
+		if (has_unbounded_parent(parser) && update_parent_node(parser) == FALSE)
 			return (handler_error);
 		parser->state = CSON_PARSER_KEY_STATE;
 		parser->buffer_offset = 0;
