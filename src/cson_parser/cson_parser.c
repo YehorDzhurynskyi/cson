@@ -32,6 +32,7 @@ t_bool	cson_parser_init(t_cson_parser *parser, int *err)
 	parser->bounded_object_depth = 0;
 	parser->err = err;
 	*parser->err = 0;
+	parser->is_comment = FALSE;
 	if (parser->root == NULL || parser->root->value.tuple == NULL
 	|| parser->buffer == NULL)
 	{
