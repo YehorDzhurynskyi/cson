@@ -29,31 +29,46 @@ static t_state_handler	determine_state_handler(int state)
 	return (state_handler_pool[state]);
 }
 
+static t_handler_status	handle_bounds(t_cson_parser *parser, char ch)
+{
+	if (ch == ']')
+		parser->array_depth--;
+	else if (ch == '[')
+		parser->array_depth++;
+	else if (ch == '}')
+		parser->bounded_object_depth--;
+	else if (ch == '{')
+		parser->bounded_object_depth++;
+	if (ch == ']' || ch == '}')
+	{
+		if (cson_assign_value(parser) == FALSE)
+			return (handler_error);
+		parser->parent = parser->parent->parent;
+		return (handler_skip);
+	}
+	return (handler_record);
+}
+
 static t_handler_status	status_of_handler(t_cson_parser *parser, char ch)
 {
 	t_state_handler		state_handler;
+	t_handler_status	status;
 
+	status = handler_record;
+	if (ch == '#')
+		parser->is_comment = TRUE;
 	if (ch == '\n')
-		parser->current_line++;
-	else if (parser->state != CSON_PARSER_KEY_STATE
-	&& parser->state != CSON_PARSER_STRING_VALUE_STATE)
 	{
-		if (ch == ']')
-			parser->array_depth--;
-		else if (ch == '[')
-			parser->array_depth++;
-		else if (ch == '}')
-			parser->bounded_object_depth--;
-		else if (ch == '{')
-			parser->bounded_object_depth++;
-		if (ch == ']' || ch == '}')
-		{
-			if (cson_assign_value(parser) == FALSE)
-				return (handler_error);
-			parser->parent = parser->parent->parent;
-			return (handler_skip);
-		}
+		parser->current_line++;
+		parser->is_comment = FALSE;
 	}
+	if (parser->is_comment)
+		return (handler_skip);
+	if (parser->state != CSON_PARSER_KEY_STATE
+	&& parser->state != CSON_PARSER_STRING_VALUE_STATE)
+		status = handle_bounds(parser, ch);
+	if (status != handler_record)
+		return (status);
 	state_handler = determine_state_handler(parser->state);
 	return (state_handler(parser, ch));
 }

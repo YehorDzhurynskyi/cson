@@ -48,6 +48,7 @@ struct				s_cson_parser
 	int				*err;
 	int				array_depth;
 	int				bounded_object_depth;
+	t_bool			is_comment;
 };
 
 void				cson_log_parsing_error(t_cson_parser *parser,
