@@ -30,7 +30,8 @@ t_bool					cson_create_node(t_cson_parser *parser)
 		parser->current->key = NULL;
 	else
 	{
-		parser->current->key = ft_strsub(parser->buffer, 0, parser->buffer_offset);
+		parser->current->key = ft_strsub(parser->buffer,
+		0, parser->buffer_offset);
 		if (parser->current->key == NULL)
 		{
 			cson_log_error(parser, strerror(errno), CSON_MEM_ALLOC_ERROR);
@@ -41,7 +42,8 @@ t_bool					cson_create_node(t_cson_parser *parser)
 	return (TRUE);
 }
 
-t_handler_status		cson_before_value_handler(t_cson_parser *parser, char ch)
+t_handler_status		cson_before_value_handler(t_cson_parser *parser,
+char ch)
 {
 	if (ft_isws(ch))
 		return (handler_skip);

@@ -31,14 +31,7 @@ t_handler_status		cson_after_key_handler(t_cson_parser *parser, char ch)
 t_handler_status		cson_key_handler(t_cson_parser *parser, char ch)
 {
 	if (cson_is_quoted_key(parser))
-	{
-		if (ch == parser->buffer[0])
-		{
-			ft_memmove(parser->buffer, parser->buffer + 1, --parser->buffer_offset);
-			return (handler_skip);
-		}
-		return (handler_record);
-	}
+		return (cson_process_quoted_key(parser, ch));
 	if (ch == ':')
 	{
 		if (parser->buffer_offset == 0)

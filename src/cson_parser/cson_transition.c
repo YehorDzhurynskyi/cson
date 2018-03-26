@@ -25,6 +25,7 @@ static t_state_handler	determine_state_handler(int state)
 		cson_boolean_handler,
 		cson_eov_handler
 	};
+
 	return (state_handler_pool[state]);
 }
 
@@ -32,7 +33,8 @@ static t_bool			symbol_preprocessing(t_cson_parser *parser, char ch)
 {
 	if (ch == '\n')
 		parser->current_line++;
-	else if (parser->state != CSON_PARSER_KEY_STATE && parser->state != CSON_PARSER_STRING_VALUE_STATE)
+	else if (parser->state != CSON_PARSER_KEY_STATE
+	&& parser->state != CSON_PARSER_STRING_VALUE_STATE)
 	{
 		if (ch == ']')
 			parser->array_depth--;
@@ -53,7 +55,8 @@ static t_bool			symbol_preprocessing(t_cson_parser *parser, char ch)
 	return (FALSE);
 }
 
-void					cson_parse_chunk(t_cson_parser *parser, const char *buffer, size_t size)
+void					cson_parse_chunk(t_cson_parser *parser,
+const char *buffer, size_t size)
 {
 	int					i;
 	t_state_handler		state_handler;
@@ -62,7 +65,6 @@ void					cson_parse_chunk(t_cson_parser *parser, const char *buffer, size_t size
 	i = -1;
 	while (++i < (int)size)
 	{
-		// ft_printf("STATE IS = %d, CHAR IS = %c\n", parser->state, buffer[i]);
 		if (symbol_preprocessing(parser, buffer[i]))
 			continue ;
 		state_handler = determine_state_handler(parser->state);

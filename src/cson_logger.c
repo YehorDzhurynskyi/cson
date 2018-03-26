@@ -12,7 +12,8 @@
 
 #include "cson_parser.h"
 
-void	cson_log_parsing_error(t_cson_parser *parser, const char *msg, char error_symbol, int errcode)
+void	cson_log_parsing_error(t_cson_parser *parser,
+const char *msg, char error_symbol, int errcode)
 {
 	*parser->err = errcode;
 	ft_printf_fd(2, "[%#x] CSON Parsing error (on line: %d)"

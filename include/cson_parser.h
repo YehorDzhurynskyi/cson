@@ -50,20 +50,30 @@ struct				s_cson_parser
 	int				bounded_object_depth;
 };
 
-void				cson_log_parsing_error(t_cson_parser *parser, const char *msg, char error_symbol, int errcode);
-void				cson_log_error(t_cson_parser *parser, const char *msg, int errcode);
+void				cson_log_parsing_error(t_cson_parser *parser,
+const char *msg, char error_symbol, int errcode);
+void				cson_log_error(t_cson_parser *parser,
+const char *msg, int errcode);
+
 t_cson				*cson_alloc(t_cson *is_root);
+
 t_bool				cson_parser_init(t_cson_parser *parser, int *err);
 t_cson				*cson_parser_done(t_cson_parser *parser);
 void				cson_parser_fail(t_cson_parser *parser);
 void				cson_parser_free(t_cson_parser *parser);
-void				cson_parse_chunk(t_cson_parser *parser, const char *buffer, size_t size);
+
+void				cson_parse_chunk(t_cson_parser *parser,
+const char *buffer, size_t size);
 t_bool				cson_assign_value(t_cson_parser *parser);
 t_bool				cson_create_node(t_cson_parser *parser);
+
 t_handler_status	cson_compose_object(t_cson_parser *parser);
 t_handler_status	cson_compose_array(t_cson_parser *parser);
+
 t_bool				cson_is_key_symbol(char ch);
 t_bool				cson_is_quoted_key(const t_cson_parser *parser);
+t_handler_status	cson_process_quoted_key(t_cson_parser *parser, char ch);
+
 /*
 **	Finite-state machine handlers
 */

@@ -35,7 +35,8 @@ static t_bool	cson_assign_number(t_cson_parser *parser)
 	}
 	parser->buffer[parser->buffer_offset] = '\0';
 	is_integer = ft_strchr(parser->buffer, '.') == NULL;
-	parser->current->value_type = is_integer ? CSON_INTEGER_VALUE_TYPE : CSON_REAL_VALUE_TYPE;
+	parser->current->value_type = is_integer
+	? CSON_INTEGER_VALUE_TYPE : CSON_REAL_VALUE_TYPE;
 	if (is_integer)
 		parser->current->value.integer = ft_atoi(parser->buffer);
 	else

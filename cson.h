@@ -52,7 +52,6 @@ struct				s_cson
 	t_cson			*parent;
 };
 
-
 /*
 **	ALLOC/DEALLOC
 */

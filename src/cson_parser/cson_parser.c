@@ -32,7 +32,8 @@ t_bool	cson_parser_init(t_cson_parser *parser, int *err)
 	parser->bounded_object_depth = 0;
 	parser->err = err;
 	*parser->err = 0;
-	if (parser->root == NULL || parser->root->value.tuple == NULL || parser->buffer == NULL)
+	if (parser->root == NULL || parser->root->value.tuple == NULL
+	|| parser->buffer == NULL)
 	{
 		cson_log_error(parser, strerror(errno), CSON_MEM_ALLOC_ERROR);
 		cson_parser_fail(parser);
@@ -45,12 +46,12 @@ void	cson_parser_free(t_cson_parser *parser)
 {
 	if (parser->root && parser->root->value.tuple->size == 0)
 	{
-		cson_log_error(parser, "input data is empty", CSON_EMPTY_DATA_PARSING_ERROR);
+		cson_log_error(parser, "input data is empty",
+		CSON_EMPTY_DATA_PARSING_ERROR);
 		cson_parser_fail(parser);
 	}
 	if (parser->array_depth != 0 || parser->bounded_object_depth != 0)
 	{
-
 		cson_log_error(parser, parser->array_depth != 0
 		? ARRAY_BRACKETS_ERROR_MSG : OBJECT_BRACKETS_ERROR_MSG,
 		CSON_BRACKETS_PARSING_ERROR);

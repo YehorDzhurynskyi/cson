@@ -37,12 +37,12 @@ inline static void	print_composite_value(const t_cson *cson)
 	else if (cson->value_type == CSON_ARRAY_VALUE_TYPE)
 	{
 		ft_printf(" (array)");
-			if (cson->value.tuple->size == 0)
-				ft_printf(" []");
+		if (cson->value.tuple->size == 0)
+			ft_printf(" []");
 	}
 }
 
-static void	print_node(const t_cson *cson)
+static void			print_node(const t_cson *cson)
 {
 	int	depth;
 
@@ -60,7 +60,7 @@ static void	print_node(const t_cson *cson)
 	ft_putchar('\n');
 }
 
-void		cson_print(const t_cson *cson)
+void				cson_print(const t_cson *cson)
 {
 	if (cson == NULL)
 	{

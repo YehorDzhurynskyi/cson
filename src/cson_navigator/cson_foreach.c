@@ -18,7 +18,8 @@ void	cson_foreach(const t_cson *cson, void (*func)(const t_cson *item))
 	t_alst		*tuple;
 
 	func(cson);
-	if (cson->value_type != CSON_ARRAY_VALUE_TYPE && cson->value_type != CSON_OBJECT_VALUE_TYPE)
+	if (cson->value_type != CSON_ARRAY_VALUE_TYPE
+	&& cson->value_type != CSON_OBJECT_VALUE_TYPE)
 		return ;
 	tuple = cson->value.tuple;
 	i = 0;

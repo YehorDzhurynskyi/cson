@@ -34,7 +34,8 @@ t_bool	cson_flush_buffer(t_cson_parser *parser)
 {
 	if (parser->state == CSON_PARSER_STRING_VALUE_STATE)
 	{
-		cson_log_error(parser, "the value of the string should have a closing quote", CSON_VALUE_PARSING_ERROR);
+		cson_log_error(parser, "the value of the string"
+		" should have a closing quote", CSON_VALUE_PARSING_ERROR);
 		return (FALSE);
 	}
 	return (cson_assign_value(parser));
