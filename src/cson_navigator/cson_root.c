@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cson_depth.c                                       :+:      :+:    :+:   */
+/*   cson_root.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ydzhuryn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,17 +12,9 @@
 
 #include "cson.h"
 
-int	cson_depth(const t_cson *cson)
+const t_cson	*cson_root(const t_cson *cson)
 {
-	int depth;
-
-	if (!cson)
-		return (-1);
-	depth = 0;
 	while (cson->parent)
-	{
-		depth++;
 		cson = cson->parent;
-	}
-	return (depth);
+	return (cson);
 }

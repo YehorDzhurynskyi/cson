@@ -58,7 +58,7 @@ static t_bool			update_parent_node(t_cson_parser *parser)
 	int	depth;
 	int	i;
 
-	depth = cson_depth_of_node(parser->parent);
+	depth = cson_depth(parser->parent);
 	if (parser->buffer_offset - depth > 0)
 	{
 		cson_log_error(parser, "bad identation before key",

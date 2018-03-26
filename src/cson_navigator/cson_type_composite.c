@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cson_depth.c                                       :+:      :+:    :+:   */
+/*   cson_type_composite.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ydzhuryn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,17 +12,17 @@
 
 #include "cson.h"
 
-int	cson_depth(const t_cson *cson)
+inline t_bool	cson_is_array(const t_cson *cson)
 {
-	int depth;
+	return (cson->value_type == CSON_ARRAY_VALUE_TYPE);
+}
 
-	if (!cson)
-		return (-1);
-	depth = 0;
-	while (cson->parent)
-	{
-		depth++;
-		cson = cson->parent;
-	}
-	return (depth);
+inline t_bool	cson_is_object(const t_cson *cson)
+{
+	return (cson->value_type == CSON_OBJECT_VALUE_TYPE);
+}
+
+inline t_bool	cson_is_composite(const t_cson *cson)
+{
+	return (cson_is_object(cson) || cson_is_array(cson));
 }

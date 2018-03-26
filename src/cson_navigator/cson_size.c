@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cson_depth.c                                       :+:      :+:    :+:   */
+/*   cson_size.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ydzhuryn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,17 +12,9 @@
 
 #include "cson.h"
 
-int	cson_depth(const t_cson *cson)
+inline int	cson_size(const t_cson *cson)
 {
-	int depth;
-
-	if (!cson)
-		return (-1);
-	depth = 0;
-	while (cson->parent)
-	{
-		depth++;
-		cson = cson->parent;
-	}
-	return (depth);
+	if (cson_is_composite(cson))
+		return (cson->value.tuple->size);
+	return (-1);
 }

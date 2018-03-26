@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cson_depth.c                                       :+:      :+:    :+:   */
+/*   cson_get_primitive.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ydzhuryn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,17 +12,22 @@
 
 #include "cson.h"
 
-int	cson_depth(const t_cson *cson)
+inline const char	*cson_get_string(const t_cson *cson)
 {
-	int depth;
+	return (cson->value.string);
+}
 
-	if (!cson)
-		return (-1);
-	depth = 0;
-	while (cson->parent)
-	{
-		depth++;
-		cson = cson->parent;
-	}
-	return (depth);
+inline long long	cson_get_integer(const t_cson *cson)
+{
+	return (cson->value.integer);
+}
+
+inline double		cson_get_real(const t_cson *cson)
+{
+	return (cson->value.real);
+}
+
+inline t_bool		cson_get_boolean(const t_cson *cson)
+{
+	return (cson->value.boolean == 0 ? FALSE : TRUE);
 }

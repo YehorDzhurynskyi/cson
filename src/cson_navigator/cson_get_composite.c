@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cson_depth.c                                       :+:      :+:    :+:   */
+/*   cson_get_composite.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ydzhuryn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,17 +12,12 @@
 
 #include "cson.h"
 
-int	cson_depth(const t_cson *cson)
+inline const t_alst	*cson_get_array(const t_cson *cson)
 {
-	int depth;
+	return (cson->value.tuple);
+}
 
-	if (!cson)
-		return (-1);
-	depth = 0;
-	while (cson->parent)
-	{
-		depth++;
-		cson = cson->parent;
-	}
-	return (depth);
+inline const t_alst	*cson_get_object(const t_cson *cson)
+{
+	return (cson->value.tuple);
 }

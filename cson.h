@@ -62,18 +62,34 @@ void				cson_free(t_cson *cson);
 /*
 **	NAVIGATION
 */
-int					cson_type_of_node(const t_cson *cson, const char *nodepath);
-const char			*cson_get_string(const t_cson *cson, const char *nodepath);
-int					cson_get_integer(const t_cson *cson, const char *nodepath);
-double				cson_get_real(const t_cson *cson, const char *nodepath);
-const t_cson		*cson_get_array(const t_cson *cson, const char *nodepath, size_t *size);
-const t_cson		*cson_get_object(const t_cson *cson, const char *nodepath);
+t_bool				cson_is_string(const t_cson *cson);
+t_bool				cson_is_integer(const t_cson *cson);
+t_bool				cson_is_real(const t_cson *cson);
+t_bool				cson_is_boolean(const t_cson *cson);
+t_bool				cson_is_primitive(const t_cson *cson);
+t_bool				cson_is_array(const t_cson *cson);
+t_bool				cson_is_object(const t_cson *cson);
+t_bool				cson_is_composite(const t_cson *cson);
+
+const char			*cson_get_string(const t_cson *cson);
+long long			cson_get_integer(const t_cson *cson);
+double				cson_get_real(const t_cson *cson);
+t_bool				cson_get_boolean(const t_cson *cson);
+const t_alst		*cson_get_array(const t_cson *cson);
+const t_alst		*cson_get_object(const t_cson *cson);
+
+const t_cson		*cson_valueof(const t_cson *cson, const char *key);
+const t_cson		*cson_at(const t_cson *cson, unsigned int index);
+const t_cson		*cson_find(const t_cson *cson, char *nodepath);
 
 /*
 **	MISC
 */
-void				cson_foreach(const t_cson *cson, void (*func)(const t_cson *item));
-int					cson_depth_of_node(const t_cson *cson);
+void				cson_foreach(const t_cson *cson,
+void (*func)(const t_cson *item));
+int					cson_depth(const t_cson *cson);
+int					cson_size(const t_cson *cson);
 void				cson_print(const t_cson *cson);
+const t_cson		*cson_root(const t_cson *cson);
 
 #endif

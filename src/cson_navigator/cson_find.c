@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cson_depth.c                                       :+:      :+:    :+:   */
+/*   cson_find.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ydzhuryn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,17 +12,23 @@
 
 #include "cson.h"
 
-int	cson_depth(const t_cson *cson)
+const t_cson			*cson_find(const t_cson *cson, char *nodepath)
 {
-	int depth;
+	char	*delim;
 
-	if (!cson)
-		return (-1);
-	depth = 0;
-	while (cson->parent)
-	{
-		depth++;
-		cson = cson->parent;
-	}
-	return (depth);
+	if (*nodepath == '\0')
+		return (cson);
+	if (*nodepath == '/')
+		cson = cson_root(cson);
+	delim = ft_strchr(nodepath, '/');
+	if (delim == NULL)
+		return (cson_valueof(cson, nodepath));
+	*delim++ = '\0';
+	if (ft_strequ(nodepath, ".."))
+		return (cson_find(cson->parent, delim));
+	else if (ft_strequ(nodepath, "."))
+		return (cson_find(cson, delim));
+	else if (cson_is_array(cson))
+		return (cson_find(cson_at(cson, ft_atoi(nodepath)), delim));
+	return (cson_find(cson_valueof(cson, nodepath), delim));
 }

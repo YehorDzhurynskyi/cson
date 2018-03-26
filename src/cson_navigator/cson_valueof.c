@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cson_depth.c                                       :+:      :+:    :+:   */
+/*   cson_valueof.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ydzhuryn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,17 +12,21 @@
 
 #include "cson.h"
 
-int	cson_depth(const t_cson *cson)
+const t_cson	*cson_valueof(const t_cson *cson, const char *key)
 {
-	int depth;
+	t_alst			*object;
+	unsigned int	i;
+	t_cson			*needle;
 
-	if (!cson)
-		return (-1);
-	depth = 0;
-	while (cson->parent)
+	if (cson_is_object(cson) == FALSE)
+		return (NULL);
+	object = (t_alst*)cson_get_object(cson);
+	i = 0;
+	while (i < object->size)
 	{
-		depth++;
-		cson = cson->parent;
+		needle = (t_cson*)alst_get(object, i++);
+		if (ft_strequ(needle->key, key))
+			return (needle);
 	}
-	return (depth);
+	return (NULL);
 }
