@@ -12,22 +12,22 @@
 
 #include "cson.h"
 
-inline const char	*cson_get_string(const t_cson *cson)
+inline const char    *cson_get_string(const t_cson *cson)
 {
-	return (cson->value.string);
+    return (cson_is_string(cson) ? cson->value.string : NULL);
 }
 
-inline long long	cson_get_integer(const t_cson *cson)
+inline long long    cson_get_integer(const t_cson *cson)
 {
-	return (cson->value.integer);
+    return (cson_is_integer(cson) ? cson->value.integer : 0);
 }
 
-inline double		cson_get_real(const t_cson *cson)
+inline double        cson_get_real(const t_cson *cson)
 {
-	return (cson->value.real);
+    return (cson_is_real(cson) ? cson->value.real : 0.0);
 }
 
-inline t_bool		cson_get_boolean(const t_cson *cson)
+inline t_bool        cson_get_boolean(const t_cson *cson)
 {
-	return (cson->value.boolean == 0 ? FALSE : TRUE);
+    return (cson_is_boolean(cson) ? cson->value.boolean : FALSE);
 }
