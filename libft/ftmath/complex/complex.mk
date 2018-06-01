@@ -9,4 +9,4 @@ LIBFT_SRC	+=	$(addprefix $(COMPLEX_DIR), $(COMPLEX_SRC:.c=.o))
 LIBFT_OBJ	+=	$(COMPLEX_OBJ)
 
 $(COMPLEX_OBJ): $(LIBFT_OBJ_DIR)%.o: $(COMPLEX_DIR)%.c
-	$(CC) $(CFLAGS) $(INCLUDE) $< -o $@
+	$(CC) $(LIBFT_CFLAGS) $(LIBFT_INCLUDE) $< -o $@

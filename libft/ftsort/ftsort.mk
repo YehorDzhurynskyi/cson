@@ -9,4 +9,4 @@ LIBFT_SRC	+=	$(addprefix $(FTSORT_DIR), $(FTSORT_SRC:.c=.o))
 LIBFT_OBJ	+=	$(FTSORT_OBJ)
 
 $(FTSORT_OBJ): $(LIBFT_OBJ_DIR)%.o: $(FTSORT_DIR)%.c
-	$(CC) $(CFLAGS) $(INCLUDE) $< -o $@
+	$(CC) $(LIBFT_CFLAGS) $(LIBFT_INCLUDE) $< -o $@

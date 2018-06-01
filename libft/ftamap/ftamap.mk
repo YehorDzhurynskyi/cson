@@ -12,4 +12,4 @@ LIBFT_SRC	+=	$(addprefix $(FTAMAP_DIR), $(FTAMAP_SRC:.c=.o))
 LIBFT_OBJ	+=	$(FTAMAP_OBJ)
 
 $(FTAMAP_OBJ): $(LIBFT_OBJ_DIR)%.o: $(FTAMAP_DIR)%.c
-	$(CC) $(CFLAGS) $(INCLUDE) $< -o $@
+	$(CC) $(LIBFT_CFLAGS) $(LIBFT_INCLUDE) $< -o $@

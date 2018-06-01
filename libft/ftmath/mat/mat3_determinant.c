@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   vec_print.c                                        :+:      :+:    :+:   */
+/*   mat3_determinant.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ydzhuryn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,27 +10,24 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "vec.h"
-#include "ft.h"
+#include "mat.h"
 
-void	vec3f_print(const int fd, t_vec3f const *v)
+inline float	mat3f_determinant(const float m[3][3])
 {
-	ft_printf_fd(fd, "vec3f: % 7.2f % 7.2f % 7.2f\n", v->x, v->y, v->z);
+	return (m[0][0] * m[1][1] * m[2][2]
+	- m[0][0] * m[1][2] * m[2][1]
+	- m[0][1] * m[1][0] * m[2][2]
+	+ m[0][1] * m[1][2] * m[2][0]
+	+ m[0][2] * m[1][0] * m[2][1]
+	- m[0][2] * m[1][1] * m[2][0]);
 }
 
-void	vec3d_print(const int fd, t_vec3d const *v)
+inline double	mat3d_determinant(const double m[3][3])
 {
-	ft_printf_fd(fd, "vec3d: % 7.2f % 7.2f % 7.2f\n", v->x, v->y, v->z);
-}
-
-void	vec4f_print(const int fd, t_vec4f const *v)
-{
-	ft_printf_fd(fd, "vec4f: % 7.2f % 7.2f % 7.2f % 7.2f\n",
-	v->x, v->y, v->z, v->w);
-}
-
-void	vec4d_print(const int fd, t_vec4d const *v)
-{
-	ft_printf_fd(fd, "vec4d: % 7.2f % 7.2f % 7.2f % 7.2f\n",
-	v->x, v->y, v->z, v->w);
+	return (m[0][0] * m[1][1] * m[2][2]
+	- m[0][0] * m[1][2] * m[2][1]
+	- m[0][1] * m[1][0] * m[2][2]
+	+ m[0][1] * m[1][2] * m[2][0]
+	+ m[0][2] * m[1][0] * m[2][1]
+	- m[0][2] * m[1][1] * m[2][0]);
 }

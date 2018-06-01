@@ -1,24 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   multibyte.h                                        :+:      :+:    :+:   */
+/*   ft_memalloc.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ydzhuryn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/11/27 14:49:36 by ydzhuryn          #+#    #+#             */
-/*   Updated: 2017/12/26 14:39:46 by ydzhuryn         ###   ########.fr       */
+/*   Created: 2017/10/25 15:19:33 by ydzhuryn          #+#    #+#             */
+/*   Updated: 2017/10/27 14:34:07 by ydzhuryn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MULTIBYTE_H
-# define MULTIBYTE_H
+#include "libft.h"
+#include <string.h>
+#include <stdlib.h>
 
-# include <wchar.h>
-# include "conversion.h"
-# include <sys/types.h>
+void	*ft_memrealloc(void *ptr, size_t oldsize, size_t newsize)
+{
+	void *arr;
 
-unsigned int	to_multibyte(wchar_t ch, char *dst);
-char			*to_multibyte_str(const wchar_t *src, ssize_t wlen);
-ssize_t			wstrlen(const wchar_t *src, t_conversion *c);
-
-#endif
+	arr = (void *)malloc(newsize);
+	if (arr == NULL || ptr == NULL)
+		return (arr);
+	ft_memcpy(arr, ptr, oldsize);
+	free(ptr);
+	return (arr);
+}

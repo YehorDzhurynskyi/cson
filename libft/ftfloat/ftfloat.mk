@@ -9,4 +9,4 @@ LIBFT_SRC	+=	$(addprefix $(FTFLOAT_DIR), $(FTFLOAT_SRC:.c=.o))
 LIBFT_OBJ	+=	$(FTFLOAT_OBJ)
 
 $(FTFLOAT_OBJ): $(LIBFT_OBJ_DIR)%.o: $(FTFLOAT_DIR)%.c
-	$(CC) $(CFLAGS) $(INCLUDE) $< -o $@
+	$(CC) $(LIBFT_CFLAGS) $(LIBFT_INCLUDE) $< -o $@

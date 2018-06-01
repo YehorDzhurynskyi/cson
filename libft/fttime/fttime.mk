@@ -7,4 +7,4 @@ LIBFT_SRC	+=	$(addprefix $(FTTIME_DIR), $(FTTIME_SRC:.c=.o))
 LIBFT_OBJ	+=	$(FTTIME_OBJ)
 
 $(FTTIME_OBJ): $(LIBFT_OBJ_DIR)%.o: $(FTTIME_DIR)%.c
-	$(CC) $(CFLAGS) $(INCLUDE) $< -o $@
+	$(CC) $(LIBFT_CFLAGS) $(LIBFT_INCLUDE) $< -o $@

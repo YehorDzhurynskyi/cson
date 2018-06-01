@@ -32,8 +32,10 @@ inline t_mat3f	mat3f_inverse(const t_mat3f *m)
 		while (++j < 3)
 		{
 			mat3f_minor(minor, m->data, i, j);
-			res.data[j][i] = d * (minor[0][0] * minor[1][1] - minor[0][1] * minor[1][0]);
-			res.data[j][i] = (i + j) % 2 == 1 ? -res.data[j][i] : res.data[j][i];
+			res.data[j][i] = d * (minor[0][0] * minor[1][1]
+			- minor[0][1] * minor[1][0]);
+			res.data[j][i] = (i + j) % 2 == 1
+			? -res.data[j][i] : res.data[j][i];
 		}
 	}
 	return (res);
@@ -58,8 +60,10 @@ inline t_mat3d	mat3d_inverse(const t_mat3d *m)
 		while (++j < 3)
 		{
 			mat3d_minor(minor, m->data, i, j);
-			res.data[j][i] = d * (minor[0][0] * minor[1][1] - minor[0][1] * minor[1][0]);
-			res.data[j][i] = (i + j) % 2 == 1 ? -res.data[j][i] : res.data[j][i];
+			res.data[j][i] = d * (minor[0][0] * minor[1][1]
+			- minor[0][1] * minor[1][0]);
+			res.data[j][i] = (i + j) % 2 == 1
+			? -res.data[j][i] : res.data[j][i];
 		}
 	}
 	return (res);
@@ -85,13 +89,14 @@ inline t_mat4f	mat4f_inverse(const t_mat4f *m)
 		{
 			mat4f_minor(minor, m->data, i, j);
 			res.data[j][i] = d * mat3f_determinant(minor);
-			res.data[j][i] = (i + j) % 2 == 1 ? -res.data[j][i] : res.data[j][i];
+			res.data[j][i] = (i + j) % 2 == 1
+			? -res.data[j][i] : res.data[j][i];
 		}
 	}
 	return (res);
 }
 
-t_mat4d	mat4d_inverse(const t_mat4d *m)
+inline t_mat4d	mat4d_inverse(const t_mat4d *m)
 {
 	double	d;
 	t_mat4d	res;
@@ -111,7 +116,8 @@ t_mat4d	mat4d_inverse(const t_mat4d *m)
 		{
 			mat4d_minor(minor, m->data, i, j);
 			res.data[j][i] = d * mat3d_determinant(minor);
-			res.data[j][i] = (i + j) % 2 == 1 ? -res.data[j][i] : res.data[j][i];
+			res.data[j][i] = (i + j) % 2 == 1
+			? -res.data[j][i] : res.data[j][i];
 		}
 	}
 	return (res);

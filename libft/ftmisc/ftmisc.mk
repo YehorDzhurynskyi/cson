@@ -10,4 +10,4 @@ LIBFT_SRC	+=	$(addprefix $(FTMISC_DIR), $(FTMISC_SRC:.c=.o))
 LIBFT_OBJ	+=	$(FTMISC_OBJ)
 
 $(FTMISC_OBJ): $(LIBFT_OBJ_DIR)%.o: $(FTMISC_DIR)%.c
-	$(CC) $(CFLAGS) $(INCLUDE) $< -o $@
+	$(CC) $(LIBFT_CFLAGS) $(LIBFT_INCLUDE) $< -o $@

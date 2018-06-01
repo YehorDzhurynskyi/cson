@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   multibyte.h                                        :+:      :+:    :+:   */
+/*   output_color.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ydzhuryn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,15 +10,12 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MULTIBYTE_H
-# define MULTIBYTE_H
+#ifndef OUTPUT_COLOR_H
+# define OUTPUT_COLOR_H
 
-# include <wchar.h>
-# include "conversion.h"
-# include <sys/types.h>
+# include "libft.h"
 
-unsigned int	to_multibyte(wchar_t ch, char *dst);
-char			*to_multibyte_str(const wchar_t *src, ssize_t wlen);
-ssize_t			wstrlen(const wchar_t *src, t_conversion *c);
+void	set_color(int id);
+t_bool	parse_color(const char *format);
 
 #endif

@@ -1,24 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   multibyte.h                                        :+:      :+:    :+:   */
+/*   cson_producer_logger.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ydzhuryn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/11/27 14:49:36 by ydzhuryn          #+#    #+#             */
-/*   Updated: 2017/12/26 14:39:46 by ydzhuryn         ###   ########.fr       */
+/*   Created: 2017/11/15 15:08:24 by ydzhuryn          #+#    #+#             */
+/*   Updated: 2018/01/05 17:20:48 by ydzhuryn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MULTIBYTE_H
-# define MULTIBYTE_H
+#include "cson_producer.h"
 
-# include <wchar.h>
-# include "conversion.h"
-# include <sys/types.h>
-
-unsigned int	to_multibyte(wchar_t ch, char *dst);
-char			*to_multibyte_str(const wchar_t *src, ssize_t wlen);
-ssize_t			wstrlen(const wchar_t *src, t_conversion *c);
-
-#endif
+void	cson_log_producing_error(const char *msg, int errcode)
+{
+	ft_printf_fd(2, "[%#x] CSON Producing error: %s\n", errcode, msg);
+}

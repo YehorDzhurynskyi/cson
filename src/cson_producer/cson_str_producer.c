@@ -1,21 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   color.h                                            :+:      :+:    :+:   */
+/*   cson_str_producer.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ydzhuryn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/11/27 14:49:36 by ydzhuryn          #+#    #+#             */
-/*   Updated: 2017/12/26 14:39:46 by ydzhuryn         ###   ########.fr       */
+/*   Created: 2017/11/15 15:08:24 by ydzhuryn          #+#    #+#             */
+/*   Updated: 2018/01/05 17:20:48 by ydzhuryn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef COLOR_H
-# define COLOR_H
+#include "cson.h"
 
-# include "libft.h"
-
-void	set_color(int id);
-t_bool	parse_color(const char *format);
-
-#endif
+char	*cson_produce_str(const t_cson *cson, size_t *size)
+{
+	if (cson == NULL || size == NULL)
+		return (CSON_NULL_PARAMETER_ERRROR);
+}

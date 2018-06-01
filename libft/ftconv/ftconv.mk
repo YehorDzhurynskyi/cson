@@ -19,4 +19,4 @@ LIBFT_SRC	+=	$(addprefix $(FTCONV_DIR), $(FTCONV_SRC:.c=.o))
 LIBFT_OBJ	+=	$(FTCONV_OBJ)
 
 $(FTCONV_OBJ): $(LIBFT_OBJ_DIR)%.o: $(FTCONV_DIR)%.c
-	$(CC) $(CFLAGS) $(INCLUDE) $< -o $@
+	$(CC) $(LIBFT_CFLAGS) $(LIBFT_INCLUDE) $< -o $@

@@ -9,4 +9,4 @@ LIBFT_SRC	+=	$(addprefix $(FTSTACK_DIR), $(FTSTACK_SRC:.c=.o))
 LIBFT_OBJ	+=	$(FTSTACK_OBJ)
 
 $(FTSTACK_OBJ): $(LIBFT_OBJ_DIR)%.o: $(FTSTACK_DIR)%.c
-	$(CC) $(CFLAGS) $(INCLUDE) $< -o $@
+	$(CC) $(LIBFT_CFLAGS) $(LIBFT_INCLUDE) $< -o $@

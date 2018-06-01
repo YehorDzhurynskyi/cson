@@ -53,7 +53,8 @@ double		mat3d_determinant(const double m[3][3]);
 t_mat3d		mat3d_scalar(const t_mat3d *m, double s);
 t_mat3d		mat3d_inverse(const t_mat3d *m);
 t_mat3d		mat3d_transpose(const t_mat3d *m);
-void		mat3d_minor(double dest[2][2], const double src[3][3], int r, int c);
+void		mat3d_minor(double dest[2][2],
+const double src[3][3], int r, int c);
 
 /*
 **	SINGLE PRECISION 4D Matrix
@@ -93,6 +94,7 @@ double		mat4d_determinant(const double m[4][4]);
 t_mat4d		mat4d_scalar(const t_mat4d *m, double s);
 t_mat4d		mat4d_inverse(const t_mat4d *m);
 t_mat4d		mat4d_transpose(const t_mat4d *m);
-void		mat4d_minor(double dest[3][3], const double src[4][4], int r, int c);
+void		mat4d_minor(double dest[3][3],
+const double src[4][4], int r, int c);
 
 #endif

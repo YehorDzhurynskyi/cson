@@ -14,4 +14,4 @@ LIBFT_SRC	+=	$(addprefix $(FTCHAR_DIR), $(FTCHAR_SRC:.c=.o))
 LIBFT_OBJ	+=	$(FTCHAR_OBJ)
 
 $(FTCHAR_OBJ): $(LIBFT_OBJ_DIR)%.o: $(FTCHAR_DIR)%.c
-	$(CC) $(CFLAGS) $(INCLUDE) $< -o $@
+	$(CC) $(LIBFT_CFLAGS) $(LIBFT_INCLUDE) $< -o $@

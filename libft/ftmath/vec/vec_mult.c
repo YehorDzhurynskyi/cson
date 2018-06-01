@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   vec_print.c                                        :+:      :+:    :+:   */
+/*   vec_mult.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ydzhuryn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -11,26 +11,25 @@
 /* ************************************************************************** */
 
 #include "vec.h"
-#include "ft.h"
 
-void	vec3f_print(const int fd, t_vec3f const *v)
+inline t_vec3f	vec3f_mult(t_vec3f const *v1, t_vec3f const *v2)
 {
-	ft_printf_fd(fd, "vec3f: % 7.2f % 7.2f % 7.2f\n", v->x, v->y, v->z);
+	return ((t_vec3f){v1->x * v2->x, v1->y * v2->y, v1->z * v2->z});
 }
 
-void	vec3d_print(const int fd, t_vec3d const *v)
+inline t_vec3d	vec3d_mult(t_vec3d const *v1, t_vec3d const *v2)
 {
-	ft_printf_fd(fd, "vec3d: % 7.2f % 7.2f % 7.2f\n", v->x, v->y, v->z);
+	return ((t_vec3d){v1->x * v2->x, v1->y * v2->y, v1->z * v2->z});
 }
 
-void	vec4f_print(const int fd, t_vec4f const *v)
+inline t_vec4f	vec4f_mult(t_vec4f const *v1, t_vec4f const *v2)
 {
-	ft_printf_fd(fd, "vec4f: % 7.2f % 7.2f % 7.2f % 7.2f\n",
-	v->x, v->y, v->z, v->w);
+	return ((t_vec4f){v1->x * v2->x, v1->y * v2->y,
+	v1->z * v2->z, v1->w * v2->w});
 }
 
-void	vec4d_print(const int fd, t_vec4d const *v)
+inline t_vec4d	vec4d_mult(t_vec4d const *v1, t_vec4d const *v2)
 {
-	ft_printf_fd(fd, "vec4d: % 7.2f % 7.2f % 7.2f % 7.2f\n",
-	v->x, v->y, v->z, v->w);
+	return ((t_vec4d){v1->x * v2->x, v1->y * v2->y,
+	v1->z * v2->z, v1->w * v2->w});
 }

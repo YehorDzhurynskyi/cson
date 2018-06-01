@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cson_logger.h                                      :+:      :+:    :+:   */
+/*   cson_file_producer.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ydzhuryn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,20 +10,21 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cson_parser.h"
+#include "cson.h"
+#include <errno.h>
 
-void	cson_log_parsing_error(t_cson_parser *parser,
-const char *msg, char error_symbol, int errcode)
+t_error_code	cson_produce_file(const t_cson *cson, const char *filename, t_bool override_file)
 {
-	*parser->err = errcode;
-	ft_printf_fd(2, "[%#x] CSON Parsing error (on line: %d)"
-	" on symbol - '%c' (ascii code is %d): %s\n",
-	errcode, parser->current_line, error_symbol, (int)error_symbol, msg);
-}
+	int	fd;
 
-void	cson_log_error(t_cson_parser *parser, const char *msg, int errcode)
-{
-	*parser->err = errcode;
-	ft_printf_fd(2, "[%#x] CSON Parsing error (on line: %d): %s\n",
-	errcode, parser->current_line, msg);
+	if (cson == NULL || filename == NULL)
+		return (CSON_NULL_PARAMETER_ERRROR);
+	fd = open(filename, O_WRONLY | O_CREAT
+	| (override_file ? O_TRUNC : O_EXCL), 0666);
+	if (fd < 0)
+	{
+		cson_log_producing_error(strerror(errno), CSON_FILE_OPENING_ERROR);
+		return (CSON_FILE_OPENING_ERROR);
+	}
+
 }

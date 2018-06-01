@@ -14,6 +14,6 @@ LIBFT_SRC	+=	$(addprefix $(FTIO_DIR), $(FTIO_SRC:.c=.o))
 LIBFT_OBJ	+=	$(FTIO_OBJ)
 
 $(FTIO_OBJ): $(LIBFT_OBJ_DIR)%.o: $(FTIO_DIR)%.c
-	$(CC) $(CFLAGS) $(INCLUDE) $< -o $@
+	$(CC) $(LIBFT_CFLAGS) $(LIBFT_INCLUDE) $< -o $@
 
 include $(LIBFT_DIR)ftio/ftprintf/ftprintf.mk

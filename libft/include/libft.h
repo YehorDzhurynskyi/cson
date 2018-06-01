@@ -84,6 +84,7 @@ int					ft_tolower(int c);
 
 void				ft_iswap(int *a, int *b);
 void				*ft_memalloc(size_t size);
+void				*ft_memrealloc(void *ptr, size_t oldsize, size_t newsize);
 void				ft_memdel(void **ap);
 char				*ft_strnew(size_t size);
 void				ft_strdel(char **as);

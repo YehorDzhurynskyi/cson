@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   vec_print.c                                        :+:      :+:    :+:   */
+/*   rgba2vec.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ydzhuryn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -11,26 +11,29 @@
 /* ************************************************************************** */
 
 #include "vec.h"
-#include "ft.h"
 
-void	vec3f_print(const int fd, t_vec3f const *v)
+inline t_vec3f	rgb2vec3f(unsigned int rgb)
 {
-	ft_printf_fd(fd, "vec3f: % 7.2f % 7.2f % 7.2f\n", v->x, v->y, v->z);
+	return ((t_vec3f){((rgb >> 16) & 0xff) / 255.0f,
+	((rgb >> 8) & 0xff) / 255.0f, ((rgb >> 0) & 0xff) / 255.0f});
 }
 
-void	vec3d_print(const int fd, t_vec3d const *v)
+inline t_vec3d	rgb2vec3d(unsigned int rgb)
 {
-	ft_printf_fd(fd, "vec3d: % 7.2f % 7.2f % 7.2f\n", v->x, v->y, v->z);
+	return ((t_vec3d){((rgb >> 16) & 0xff) / 255.0,
+	((rgb >> 8) & 0xff) / 255.0, ((rgb >> 0) & 0xff) / 255.0});
 }
 
-void	vec4f_print(const int fd, t_vec4f const *v)
+inline t_vec4f	rgba2vec4f(unsigned int rgba)
 {
-	ft_printf_fd(fd, "vec4f: % 7.2f % 7.2f % 7.2f % 7.2f\n",
-	v->x, v->y, v->z, v->w);
+	return ((t_vec4f){((rgba >> 16) & 0xff) / 255.0f,
+	((rgba >> 8) & 0xff) / 255.0f, ((rgba >> 0) & 0xff) / 255.0f,
+	((rgba >> 24) & 0xff) / 255.0f});
 }
 
-void	vec4d_print(const int fd, t_vec4d const *v)
+inline t_vec4d	rgba2vec4d(unsigned int rgba)
 {
-	ft_printf_fd(fd, "vec4d: % 7.2f % 7.2f % 7.2f % 7.2f\n",
-	v->x, v->y, v->z, v->w);
+	return ((t_vec4d){((rgba >> 16) & 0xff) / 255.0,
+	((rgba >> 8) & 0xff) / 255.0, ((rgba >> 0) & 0xff) / 255.0,
+	((rgba >> 24) & 0xff) / 255.0});
 }
