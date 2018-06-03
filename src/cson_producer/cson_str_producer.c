@@ -12,8 +12,12 @@
 
 #include "cson.h"
 
-char	*cson_produce_str(const t_cson *cson, size_t *size)
+char	*cson_produce_str(const t_cson *cson, size_t *size, t_error_code *err)
 {
 	if (cson == NULL || size == NULL)
-		return (CSON_NULL_PARAMETER_ERRROR);
+	{
+		*err = CSON_NULL_PARAMETER_ERROR;
+		return (NULL);
+	}
+	return (NULL);
 }

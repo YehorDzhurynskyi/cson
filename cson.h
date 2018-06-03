@@ -33,7 +33,7 @@
 # define CSON_VALUE_PARSING_ERROR		0x5
 # define CSON_BRACKETS_PARSING_ERROR	0x6
 # define CSON_EMPTY_DATA_PARSING_ERROR	0x7
-# define CSON_NULL_PARAMETER_ERRROR		0x8
+# define CSON_NULL_PARAMETER_ERROR		0x8
 
 typedef union u_cson_value	t_cson_value;
 union				u_cson_value
@@ -71,7 +71,7 @@ t_cson				*cson_parse_str(const char *str, size_t size, t_error_code *err);
 **	PRODUCING
 */
 t_error_code		cson_produce_file(const t_cson *cson, const char *filename, t_bool override_file);
-char				*cson_produce_str(const t_cson *cson, size_t *size);
+char				*cson_produce_str(const t_cson *cson, size_t *size, t_error_code *err);
 
 /*
 **	NAVIGATION

@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cson_get_primitive.c                               :+:      :+:    :+:   */
+/*   basic_tests.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ydzhuryn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -11,23 +11,20 @@
 /* ************************************************************************** */
 
 #include "cson.h"
+#include <unistd.h>
+#include <stdlib.h>
+#include <stdio.h>
 
-inline const char	*cson_get_string(const t_cson *cson)
+int		main(int argc, const char *argv[])
 {
-	return (cson_is_string(cson) ? cson->value.string : NULL);
-}
+	t_error_code	err;
 
-inline long long	cson_get_integer(const t_cson *cson)
-{
-	return (cson_is_integer(cson) ? cson->value.integer : 0);
-}
-
-inline double		cson_get_real(const t_cson *cson)
-{
-	return (cson_is_real(cson) ? cson->value.real : 0.0);
-}
-
-inline t_bool		cson_get_boolean(const t_cson *cson)
-{
-	return (cson_is_boolean(cson) ? cson->value.boolean : FALSE);
+	if (argc <= 2)
+	{
+		dprintf(2, "usage: src_file dest_file");
+		return (1);
+	}
+	const t_cson *cson = cson_parse_file(argv[1], &err);
+	err = cson_produce_file(cson, argv[2], TRUE);
+	return (0);
 }

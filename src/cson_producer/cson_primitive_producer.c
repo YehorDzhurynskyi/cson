@@ -19,11 +19,13 @@ const t_cson *cson)
 	char	*value;
 	size_t	bytes_produced;
 
+	bytes_produced = 0;
+	value = NULL;
 	if (cson_is_integer(cson))
 		value = ft_itoa(cson_get_integer(cson));
 	else if (cson_is_real(cson))
 		value = ft_ldtoa(cson_get_real(cson), 6);
-	bytes_produced += cson_write(producer, value, ft_strlen(value));
+	bytes_produced += cson_produce_bytes(producer, value, ft_strlen(value));
 	free(value);
 	return (bytes_produced);
 }
@@ -42,10 +44,17 @@ const t_cson *cson)
 	else
 	{
 		if (cson_is_boolean(cson))
+		{
 			value = cson_get_boolean(cson) ? "true" : "false";
+			bytes_produced += cson_produce_bytes(producer, value, ft_strlen(value));
+		}
 		if (cson_is_string(cson))
+		{
+			bytes_produced += cson_produce_bytes(producer, "\"", 1);
 			value = (char*)cson_get_string(cson);
-		bytes_produced += cson_write(producer, value, ft_strlen(value));
+			bytes_produced += cson_produce_bytes(producer, value, ft_strlen(value));
+			bytes_produced += cson_produce_bytes(producer, "\"", 1);
+		}
 	}
 	return (bytes_produced);
 }

@@ -1,14 +1,13 @@
+DEPENDENCY_DIR	:=	./Dependencies/
+
 #	libft
-LIBFT			:=	libft.a
-LIBFT_DIR		:=	./libft/
-LIBFT_SRC		=
-LIBFT_OBJ		=
-LIBFT_OBJ_DIR	:=	./obj/libft/
+LIBFT_DIR		=	$(DEPENDENCY_DIR)libft/
+LIBFT			=	$(LIBFT_DIR)/libft.a
 
 #	compilation
 CC				:=	clang
 CFLAGS			:=	-g -c -Wall -Wextra -Werror
-INCLUDE			:=	-I$(LIBFT_DIR) -I$(LIBFT_DIR)/include/ -I./include/ -I.
+INCLUDE			:=	-I$(LIBFT_DIR) -I.
 
 #	CSON
 CSON			:=	libcson.a
@@ -19,13 +18,14 @@ CSON_OBJ_DIR	:=	./obj/
 
 all: $(CSON)
 
-include $(LIBFT_DIR)libft.mk
 include ./cson.mk
 
 #	basic test
 btest: ./test/parsing_tests.c $(LIBFT) $(CSON)
 	$(CC) -DSAMPLE_DIR="\"/Users/ydzhuryn/forgit/cson/test/samples/\"" -I. -I./libft/ $< -L. -lcson -L./libft/ -lft -o $@.out
 
+produce: ./test/producing_tests.c $(LIBFT) $(CSON)
+	$(CC) -I. -I$(LIBFT_DIR) $< -L. -lcson -L$(LIBFT_DIR) -lft -o $@
 
 clean:
 #	rm -f $(LIBFT_OBJ)
