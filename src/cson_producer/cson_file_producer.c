@@ -24,7 +24,8 @@ unsigned int buffer_position, void *dest_ptr)
 	write(fd, buffer, buffer_position);
 }
 
-t_error_code	cson_produce_file(const t_cson *cson, const char *filename, t_bool override_file)
+t_error_code	cson_produce_file(const t_cson *cson,
+const char *filename, t_bool override_file)
 {
 	int	fd;
 

@@ -47,7 +47,7 @@ size_t					cson_produce_primitive_value(t_cson_producer *producer,
 const t_cson *cson)
 {
 	size_t	bytes_produced;
-	char	*value;
+	char	*str;
 
 	bytes_produced = 0;
 	if (cson_is_integer(cson) || cson_is_real(cson))
@@ -58,14 +58,14 @@ const t_cson *cson)
 	{
 		if (cson_is_boolean(cson))
 		{
-			value = cson_get_boolean(cson) ? "true" : "false";
-			bytes_produced += cson_produce_bytes(producer, value, ft_strlen(value));
+			str = cson_get_boolean(cson) ? "true" : "false";
+			bytes_produced += cson_produce_bytes(producer, str, ft_strlen(str));
 		}
 		if (cson_is_string(cson))
 		{
 			bytes_produced += cson_produce_bytes(producer, "\"", 1);
-			value = (char*)cson_get_string(cson);
-			bytes_produced += cson_produce_bytes(producer, value, ft_strlen(value));
+			str = (char*)cson_get_string(cson);
+			bytes_produced += cson_produce_bytes(producer, str, ft_strlen(str));
 			bytes_produced += cson_produce_bytes(producer, "\"", 1);
 		}
 	}

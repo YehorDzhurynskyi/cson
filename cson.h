@@ -65,13 +65,16 @@ void				cson_free(t_cson *cson);
 **	PARSING
 */
 t_cson				*cson_parse_file(const char *filename, t_error_code *err);
-t_cson				*cson_parse_str(const char *str, size_t size, t_error_code *err);
+t_cson				*cson_parse_str(const char *str,
+size_t size, t_error_code *err);
 
 /*
 **	PRODUCING
 */
-t_error_code		cson_produce_file(const t_cson *cson, const char *filename, t_bool override_file);
-char				*cson_produce_str(const t_cson *cson, size_t *size, t_error_code *err);
+t_error_code		cson_produce_file(const t_cson *cson,
+const char *filename, t_bool override_file);
+char				*cson_produce_str(const t_cson *cson,
+size_t *size, t_error_code *err);
 
 /*
 **	NAVIGATION
