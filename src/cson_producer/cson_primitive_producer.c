@@ -13,6 +13,16 @@
 #include "cson_producer.h"
 #include <stdlib.h>
 
+static inline void		trail_zeroes(char *value)
+{
+	char	*end;
+
+	end = value + ft_strlen(value) - 1;
+	while (*end == '0')
+		end--;
+	*(end + 1 + (*end == '.')) = '\0';
+}
+
 static size_t			cson_produce_number(t_cson_producer *producer,
 const t_cson *cson)
 {
@@ -24,7 +34,10 @@ const t_cson *cson)
 	if (cson_is_integer(cson))
 		value = ft_itoa(cson_get_integer(cson));
 	else if (cson_is_real(cson))
-		value = ft_ldtoa(cson_get_real(cson), 6);
+	{
+		value = ft_ldtoa(cson_get_real(cson), 15);
+		trail_zeroes(value);
+	}
 	bytes_produced += cson_produce_bytes(producer, value, ft_strlen(value));
 	free(value);
 	return (bytes_produced);

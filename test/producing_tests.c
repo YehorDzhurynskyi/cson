@@ -21,10 +21,11 @@ int		main(int argc, const char *argv[])
 
 	if (argc <= 2)
 	{
-		dprintf(2, "usage: src_file dest_file");
+		dprintf(2, "usage: src_file dest_file\n");
 		return (1);
 	}
 	const t_cson *cson = cson_parse_file(argv[1], &err);
 	err = cson_produce_file(cson, argv[2], TRUE);
+	system("leaks produce");
 	return (0);
 }
