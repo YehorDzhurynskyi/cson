@@ -118,6 +118,12 @@ double				cson_get_real(const t_cson *cson);
 t_bool				cson_get_boolean(const t_cson *cson);
 const t_alst		*cson_get_array(const t_cson *cson);
 const t_alst		*cson_get_object(const t_cson *cson);
+const char			*cson_get_default_string(const t_cson *cson,
+const char *value);
+long long			cson_get_default_integer(const t_cson *cson, int value);
+double				cson_get_default_real(const t_cson *cson, double value);
+t_bool				cson_get_default_boolean(const t_cson *cson,
+t_bool value);
 
 const t_cson		*cson_valueof(const t_cson *cson, const char *key);
 const t_cson		*cson_at(const t_cson *cson, unsigned int index);
